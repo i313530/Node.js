@@ -13,6 +13,7 @@ function appendFeedback(feedback) {
 function createFeedbackLi(feedback) {
   return $(`<li id="${feedback.id}">
     <span>${feedback.createdAt}: ${feedback.text}</span>
+    <input value=${feedback.text}/>
     <span><button onclick="removeFeedback(${feedback.id})">Remove</button></span>
    </li>`)
 }
