@@ -6,7 +6,8 @@ export class PkgSiAssign {
   public SI_ID: string
   @PrimaryColumn({ type: 'character', length: 2 })
   public VERSION: string
-  @Column()
+  @Column({ type: 'character', length: 40, nullable: true })
   public PARENT: string
+  @Column({ type: 'float', precision: 4, default: 1.0 })
   public SI_ORDER: number
 }
