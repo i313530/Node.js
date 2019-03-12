@@ -1,5 +1,6 @@
 import feedback from './feedback'
-
+import Package from './package'
 export default {
-  feedback
+  feedback,
+  Package
 }

@@ -8,6 +8,6 @@ export class PkgSiAssign {
   public VERSION: string
   @Column({ type: 'character', length: 40, nullable: true })
   public PARENT: string
-  @Column({ type: 'float', precision: 4, default: 1.0 })
+  @Column({ type: 'float4' })
   public SI_ORDER: number
 }

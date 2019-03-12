@@ -1,46 +1,49 @@
-function loadFeedbacks() {
-  $.ajax('/api/feedbacks', {
-    success: function(feedbacks) {
-      feedbacks.forEach(function(d) {
-        appendFeedback(d)
+function loadPackages() {
+  $.ajax('/api/packages', {
+    success: function(packages) {
+      packages.forEach(function(d) {
+        appendPackage(d)
       })
     }
   })
 }
-function appendFeedback(feedback) {
-  $('#feedbackList').append(createFeedbackLi(feedback))
+function appendPackage(Package) {
+  $('#PackageList').append(createPackageLi(Package))
 }
-function createFeedbackLi(feedback) {
-  return $(`<li id="${feedback.id}">
-    <span>${feedback.createdAt}: ${feedback.text}</span>
-    <input value=${feedback.text}/>
-    <span><button onclick="removeFeedback(${feedback.id})">Remove</button></span>
+function createPackageLi(Package) {
+  return $(`<li id="${Package.PKG_ID}">
+    <span>${Package.CREATED_AT}: ${Package.PKG_NAME}</span>
+    <input value=${Package.PKG_NAME}}/>
+    <span><button onclick="removePackage(${Package.PKG_ID})">Remove PKG</button></span>
    </li>`)
 }
-function addFeedback() {
-  var $feedbackInput = $('#feedbackInput')
-  $.ajax('/api/feedbacks', {
+function addPackage() {
+  var $Packageidinput = $('#PkgidInput')
+  var $PkgnameInput = $('#PkgnameInput')
+  $.ajax('/api/packages', {
     method: 'POST',
     data: {
-      text: $feedbackInput.val()
+      PKG_ID: $Packageidinput.val(),
+      PKG_NAME: $PkgnameInput.val()
     },
-    success: function(feedback) {
-      appendFeedback(feedback)
-      $feedbackInput.val('')
+    success: function(package) {
+      appendPackage(package)
+      $Packageidinput.val('')
+      $PkgnameInput.val('')
     }
   })
 }
-function removeFeedback(id) {
-  $.ajax(`/api/feedbacks/${id}`, {
+function removePackage(id) {
+  $.ajax(`/api/packages/${id}`, {
     method: 'DELETE',
     success: function(resp) {
-      removeFeedbackLi(id)
+      removePackageLi(id)
     }
   })
 }
 
-function removeFeedbackLi(feedbackId) {
-  $(`#${feedbackId}`).remove()
+function removePackageLi(packageId) {
+  $(`#${packageId}`).remove()
 }
 
-loadFeedbacks()
+loadPackages()
