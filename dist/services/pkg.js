@@ -27,19 +27,32 @@ const a = _.map(data, el => {
 */
 const getPKG = () => __awaiter(this, void 0, void 0, function* () {
     // const PKGRepo = getManager().getRepository(Package)
+    // const pkgfull = {PKG_ID:String, CREATED_AT: String, PKG_NAME: String}
     const selectPKG = yield typeorm_1.getConnection()
-        .createQueryBuilder(package_1.Package, 'PKG')
-        .select('PKG.PKG_ID')
-        .addSelect('TXT.PKG_NAME')
-        .addSelect('PKG.CREATED_AT')
-        .innerJoinAndSelect(packageT_1.PackageT, 'TXT', 'TXT.PKG_ID = PKG.PKG_ID')
+        .createQueryBuilder()
+        .select(['PKG.PKG_ID', 'PKG.CREATED_AT', 'TXT.PKG_NAME'])
+        // .addSelect('PKG.CREATED_AT')
+        // .addSelect('TXT.PKG_NAME')
+        .from('Package', 'PKG')
+        .innerJoin('PackageT', 'TXT', 'TXT.PKG_ID = PKG.PKG_ID')
+        // .where('PKGT.LANGU = EN')
         .orderBy('PKG.PKG_ID')
-        .getMany();
+        .getRawMany();
     // console.log(selectPKG)
     // const data: any[] = await PKGRepo.find()
     // return _.map(data, output => {
     //   return { id: output.PKG_ID, name: '' }
     // })
+    return selectPKG;
+});
+const PKGHead = (ID) => __awaiter(this, void 0, void 0, function* () {
+    const selectPKG = yield typeorm_1.getConnection()
+        .createQueryBuilder()
+        .select(['PKG.PKG_ID', 'PKG.CREATED_AT', 'PKG.CHANGED_AT', 'TXT.PKG_NAME'])
+        .from('Package', 'PKG')
+        .innerJoin('PackageT', 'TXT', 'TXT.PKG_ID = PKG.PKG_ID')
+        .where('PKG.PKG_ID = :id', { id: ID })
+        .getRawOne();
     return selectPKG;
 });
 const addPKG = (PKG_ID, VERSION, PKG_NAME) => __awaiter(this, void 0, void 0, function* () {
@@ -58,20 +71,27 @@ const addPKG = (PKG_ID, VERSION, PKG_NAME) => __awaiter(this, void 0, void 0, fu
     oPackageT.PKG_NAME = PKG_NAME;
     oPackageT.LANGU = 'EN';
     yield Promise.all([PKGRepo.save(oPackage), PKGTRepo.save(oPackageT)]);
+    const PKGoutput = {
+        PKG_PKG_ID: oPackage.PKG_ID,
+        PKG_CREATED_AT: oPackage.CREATED_AT,
+        TXT_PKG_NAME: oPackageT.PKG_NAME
+    };
+    return PKGoutput;
 });
 const removePKG = (PKGID) => __awaiter(this, void 0, void 0, function* () {
+    // console.log(PKGID)
     const PKGRepo = typeorm_1.getManager().getRepository(package_1.Package);
-    const oPackag = yield PKGRepo.findOne(PKGID);
+    const oPackag = yield PKGRepo.findOne({ PKG_ID: PKGID });
     const PKGTRepo = typeorm_1.getManager().getRepository(packageT_1.PackageT);
     const oPackagT = yield PKGTRepo.find({ PKG_ID: PKGID });
     yield PKGRepo.remove(oPackag);
     yield PKGTRepo.remove(oPackagT);
 });
-const renamePKG = (PKG_ID, name) => __awaiter(this, void 0, void 0, function* () {
+const renamePKG = (PKGID, name) => __awaiter(this, void 0, void 0, function* () {
     const PKGRepo = typeorm_1.getManager().getRepository(package_1.Package);
-    const oPackag = yield PKGRepo.findOne(PKG_ID);
+    const oPackag = yield PKGRepo.findOne({ PKG_ID: PKGID });
     const PKGTRepo = typeorm_1.getManager().getRepository(packageT_1.PackageT);
-    const oPackagT = yield PKGTRepo.findOne(PKG_ID);
+    const oPackagT = yield PKGTRepo.findOne({ PKG_ID: PKGID });
     oPackagT.LANGU = 'EN';
     oPackagT.PKG_NAME = name;
     yield PKGTRepo.save(oPackagT);
@@ -80,6 +100,7 @@ const renamePKG = (PKG_ID, name) => __awaiter(this, void 0, void 0, function* ()
 });
 exports.default = {
     getPKG,
+    PKGHead,
     addPKG,
     renamePKG,
     removePKG

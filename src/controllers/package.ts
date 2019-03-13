@@ -1,11 +1,12 @@
 import { Request, Response } from 'express'
 import PKGService from '../services/pkg'
-import PKGSIAService from '../services/pkgsiA'
+// import PKGSIAService from '../services/pkgsiA'
+
 /* API Controllers */
 export const getPackages = async (req: Request, res: Response) => {
   try {
     const packages = await PKGService.getPKG()
-    console.log(packages)
+    // console.log(packages)
     res.json(packages)
   } catch (err) {
     // console.log(err)
@@ -42,6 +43,18 @@ export const renamePackage = async (req: Request, res: Response) => {
     const pkgname = req.params.pkgname
     await PKGService.renamePKG(id, pkgname)
     res.send('ok')
+  } catch (err) {
+    // console.log(err)
+    res.status(500)
+    res.send(err)
+  }
+}
+export const getOnePackage = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id
+    const oPackage = await PKGService.PKGHead(id)
+    res.json(oPackage)
+    console.log()
   } catch (err) {
     // console.log(err)
     res.status(500)

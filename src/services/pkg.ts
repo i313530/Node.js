@@ -1,8 +1,9 @@
-import { getManager, Timestamp, getConnection } from 'typeorm'
+import { getManager, getConnection } from 'typeorm'
 import { Package } from '../models/package'
 import { PackageT } from '../models/packageT'
 import _ from 'lodash'
 import moment from 'moment'
+import { stringify } from 'querystring'
 // let oPKGout = {
 //   id: string,
 //   name: string
@@ -15,20 +16,33 @@ const a = _.map(data, el => {
 */
 const getPKG = async () => {
   // const PKGRepo = getManager().getRepository(Package)
+  // const pkgfull = {PKG_ID:String, CREATED_AT: String, PKG_NAME: String}
   const selectPKG = await getConnection()
-    .createQueryBuilder(Package, 'PKG')
-    .select('PKG.PKG_ID')
-    .addSelect('TXT.PKG_NAME')    
-    .addSelect('PKG.CREATED_AT')    
-    .innerJoinAndSelect(PackageT, 'TXT', 'TXT.PKG_ID = PKG.PKG_ID')
+    .createQueryBuilder()
+    .select(['PKG.PKG_ID', 'PKG.CREATED_AT', 'TXT.PKG_NAME'])
+    // .addSelect('PKG.CREATED_AT')
+    // .addSelect('TXT.PKG_NAME')
+    .from('Package', 'PKG')
+    .innerJoin('PackageT', 'TXT', 'TXT.PKG_ID = PKG.PKG_ID')
+    // .where('PKGT.LANGU = EN')
     .orderBy('PKG.PKG_ID')
-    .getMany()
-// console.log(selectPKG)
+    .getRawMany()
+  // console.log(selectPKG)
   // const data: any[] = await PKGRepo.find()
 
   // return _.map(data, output => {
   //   return { id: output.PKG_ID, name: '' }
   // })
+  return selectPKG
+}
+const PKGHead = async (ID: string) => {
+  const selectPKG = await getConnection()
+    .createQueryBuilder()
+    .select(['PKG.PKG_ID', 'PKG.CREATED_AT', 'PKG.CHANGED_AT','TXT.PKG_NAME'])
+    .from('Package', 'PKG')
+    .innerJoin('PackageT', 'TXT', 'TXT.PKG_ID = PKG.PKG_ID')
+    .where('PKG.PKG_ID = :id', { id: ID })
+    .getRawOne()
   return selectPKG
 }
 const addPKG = async (PKG_ID: string, VERSION: string, PKG_NAME: string) => {
@@ -46,20 +60,27 @@ const addPKG = async (PKG_ID: string, VERSION: string, PKG_NAME: string) => {
   oPackageT.PKG_NAME = PKG_NAME
   oPackageT.LANGU = 'EN'
   await Promise.all([PKGRepo.save(oPackage), PKGTRepo.save(oPackageT)])
+  const PKGoutput = {
+    PKG_PKG_ID: oPackage.PKG_ID,
+    PKG_CREATED_AT: oPackage.CREATED_AT,
+    TXT_PKG_NAME: oPackageT.PKG_NAME
+  }
+  return PKGoutput
 }
 const removePKG = async (PKGID: string) => {
+  // console.log(PKGID)
   const PKGRepo = getManager().getRepository(Package)
-  const oPackag = await PKGRepo.findOne(PKGID)
+  const oPackag = await PKGRepo.findOne({ PKG_ID: PKGID })
   const PKGTRepo = getManager().getRepository(PackageT)
   const oPackagT = await PKGTRepo.find({ PKG_ID: PKGID })
   await PKGRepo.remove(oPackag)
   await PKGTRepo.remove(oPackagT)
 }
-const renamePKG = async (PKG_ID: string, name: string) => {
+const renamePKG = async (PKGID: string, name: string) => {
   const PKGRepo = getManager().getRepository(Package)
-  const oPackag = await PKGRepo.findOne(PKG_ID)
+  const oPackag = await PKGRepo.findOne({ PKG_ID: PKGID })
   const PKGTRepo = getManager().getRepository(PackageT)
-  const oPackagT = await PKGTRepo.findOne(PKG_ID)
+  const oPackagT = await PKGTRepo.findOne({ PKG_ID: PKGID })
   oPackagT.LANGU = 'EN'
   oPackagT.PKG_NAME = name
   await PKGTRepo.save(oPackagT)
@@ -68,6 +89,7 @@ const renamePKG = async (PKG_ID: string, name: string) => {
 }
 export default {
   getPKG,
+  PKGHead,
   addPKG,
   renamePKG,
   removePKG

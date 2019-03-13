@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm'
+import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm'
+// import { Package } from './package'
 @Entity()
 export class PackageT {
   @PrimaryColumn({ type: 'character', length: 40 })
@@ -9,4 +10,9 @@ export class PackageT {
   @Column({ nullable: true })
   public PKG_NAME: string
   public PKG_DESC: string
+
+  // @ManyToOne(type => Package, pkg => pkg.packageTs)
+  // public pkg: Package
+
+  // public packageTs: PackageT[]
 }

@@ -12,11 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const pkg_1 = __importDefault(require("../services/pkg"));
+// import PKGSIAService from '../services/pkgsiA'
 /* API Controllers */
 exports.getPackages = (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
         const packages = yield pkg_1.default.getPKG();
-        console.log(packages);
+        // console.log(packages)
         res.json(packages);
     }
     catch (err) {
@@ -56,6 +57,19 @@ exports.renamePackage = (req, res) => __awaiter(this, void 0, void 0, function* 
         const pkgname = req.params.pkgname;
         yield pkg_1.default.renamePKG(id, pkgname);
         res.send('ok');
+    }
+    catch (err) {
+        // console.log(err)
+        res.status(500);
+        res.send(err);
+    }
+});
+exports.getOnePackage = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const id = req.params.id;
+        const oPackage = yield pkg_1.default.PKGHead(id);
+        res.json(oPackage);
+        console.log();
     }
     catch (err) {
         // console.log(err)

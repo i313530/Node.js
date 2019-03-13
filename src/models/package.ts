@@ -1,8 +1,12 @@
-import { Entity, Column, PrimaryColumn, Timestamp } from 'typeorm'
+import { Entity, Column, PrimaryColumn, Timestamp, OneToMany, JoinTable } from 'typeorm'
+// import { PackageT } from './packageT'
 @Entity()
 export class Package {
   @PrimaryColumn({ type: 'character', length: 40 })
   public PKG_ID: string
+
+  // @OneToMany(type => PackageT, packageT => packageT.pkg)
+  // public packageTs: PackageT[]
 
   @PrimaryColumn({ type: 'character', length: 2 })
   public VERSION: string

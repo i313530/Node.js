@@ -1,14 +1,6 @@
 "use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const PKGController = __importStar(require("../controllers/package"));
 const ApiRouter = express_1.Router();
 exports.default = (app) => {
     ApiRouter.get('/', PKGController.getPackages);
@@ -16,6 +8,6 @@ exports.default = (app) => {
     ApiRouter.delete('/:id', PKGController.removePackage);
     ApiRouter.get('/:id', PKGController.getOnePackage);
     ApiRouter.put('/:id/:pkgname', PKGController.renamePackage);
-    app.use('/api/packages', ApiRouter);
+    app.use('/api/packageA', ApiRouter);
 };
-//# sourceMappingURL=package.js.map
+//# sourceMappingURL=PKGassignment.js.map

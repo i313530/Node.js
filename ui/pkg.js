@@ -11,12 +11,13 @@ function appendPackage(Package) {
   $('#PackageList').append(createPackageLi(Package))
 }
 function createPackageLi(Package) {
-  return $(`<li id="${Package.PKG_ID}">
-    <span>${Package.CREATED_AT}: ${Package.PKG_NAME}</span>
-    <input value=${Package.PKG_NAME}}/>
-    <span><button onclick="removePackage(${Package.PKG_ID})">Remove PKG</button></span>
+  return $(`<li id="${Package.PKG_PKG_ID}">
+    <span><a href="./PKGDetail.html?id=${Package.PKG_PKG_ID}">${Package.PKG_PKG_ID}</a>${Package.PKG_CREATED_AT}</span>
+    <input value="${Package.TXT_PKG_NAME}">
+    <span><button onclick="removePackage('${Package.PKG_PKG_ID}')">Remove PKG</button></span>
    </li>`)
 }
+
 function addPackage() {
   var $Packageidinput = $('#PkgidInput')
   var $PkgnameInput = $('#PkgnameInput')
