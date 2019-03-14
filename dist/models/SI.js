@@ -21,12 +21,12 @@ __decorate([
     __metadata("design:type", String)
 ], Scopeitem.prototype, "VERSION", void 0);
 __decorate([
-    typeorm_1.Column({ type: 'character', length: 20 }),
+    typeorm_1.Column({ type: 'character', length: 20, nullable: true }),
     __metadata("design:type", String)
 ], Scopeitem.prototype, "CREATED_BY", void 0);
 __decorate([
-    typeorm_1.Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }),
-    __metadata("design:type", Number)
+    typeorm_1.Column({ type: 'timestamp' }),
+    __metadata("design:type", String)
 ], Scopeitem.prototype, "CREATED_AT", void 0);
 __decorate([
     typeorm_1.Column({ type: 'character', length: 20, nullable: true }),
@@ -34,7 +34,7 @@ __decorate([
 ], Scopeitem.prototype, "CHANGED_BY", void 0);
 __decorate([
     typeorm_1.Column({ type: 'timestamp', nullable: true }),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], Scopeitem.prototype, "CHANGED_AT", void 0);
 Scopeitem = __decorate([
     typeorm_1.Entity()

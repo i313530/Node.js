@@ -1,5 +1,4 @@
 var ThisID
-var ThisPKG
 
 function getUrlParam(name) {
   var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
@@ -21,14 +20,67 @@ function loadPackage() {
       appendPackage(package)
     }
   })
+  $.ajax(`/api/pkgsiA/${id}`, {
+    method: 'GET',
+    success: function(Assignments) {
+      Assignments.forEach(function(d) {
+        appendAssigns(d)
+      })
+    }
+  })
+  $.ajax(`/api/unassignSI/${id}`, {
+    method: 'GET',
+    success: function(SIs) {
+      SIs.forEach(function(d) {
+        appendUnassigns(d)
+      })
+    }
+  })
+}
+function appendUnassigns(SIs) {
+  $('#SIList').append(createUnassignLi(SIs))
+}
+function createUnassignLi(SIs) {
+  return $(`<li id="${SIs.SI_ID}">
+    <span>${SIs.SI_ID}</span>
+    <span><button onclick="addAssign('${SIs.SI_ID}')">Assign to ${ThisID}</button></span>
+   </li>`)
+}
+function addAssign(SI_ID) {
+  $.ajax(`/api/pkgsiA/${ThisID}/${SI_ID}`, {
+    method: 'POST',
+    success: function(SI_ID) {
+      removeUnassignLi(SI_ID)
+      // appendAssigns(d)
+    }
+  })
+}
+function appendAssigns(SIs) {
+  $('#Assignments').append(createAssignLi(SIs))
+}
+function createAssignLi(SIs) {
+  return $(`<li id="${SIs.SI_SI_ID}">
+    <span>${SIs.SI_SI_ID} / ${SIs.TXT_SI_NAME}</span>
+    <span><button onclick="removeAssign('${SIs.SI_SI_ID}')">Remove Assignment</button></span>
+   </li>`)
+}
+function removeAssign(id) {
+  $.ajax(`/api/pkgsiA/${ThisID}/${id}`, {
+    method: 'DELETE',
+    success: function(resp) {
+      removeAssignLi(id)
+    }
+  })
 }
 
+function removeAssignLi(id) {
+  $(`#${id}`).remove()
+}
 function appendPackage(Package) {
   return $('#PackageHeader').append(appendDetail(Package))
 }
 
 function appendDetail(Package) {
-  ThisPKG = Package
   return $(`<div>
     <text>Package ID: ${Package.PKG_PKG_ID}</text> 
     </p>
@@ -58,7 +110,7 @@ function renamePackage() {
 function resetLastChange() {
   // return ThisPKG.PKG_CHANGED_AT = new Date().toTimeString()
   var ts = new Date().toLocaleString()
-  console.log(ts)
   $('#Last')[0].innerHTML = 'Last changed at: ' + ts
 }
+
 loadPackage()

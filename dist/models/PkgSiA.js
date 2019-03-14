@@ -17,6 +17,10 @@ __decorate([
     __metadata("design:type", String)
 ], PkgSiAssign.prototype, "PKG_ID", void 0);
 __decorate([
+    typeorm_1.PrimaryColumn({ type: 'character', length: 40 }),
+    __metadata("design:type", String)
+], PkgSiAssign.prototype, "SI_ID", void 0);
+__decorate([
     typeorm_1.PrimaryColumn({ type: 'character', length: 2 }),
     __metadata("design:type", String)
 ], PkgSiAssign.prototype, "VERSION", void 0);

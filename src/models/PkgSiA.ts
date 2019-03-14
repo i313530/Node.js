@@ -3,6 +3,7 @@ import { Entity, Column, PrimaryColumn } from 'typeorm'
 export class PkgSiAssign {
   @PrimaryColumn({ type: 'character', length: 40 })
   public PKG_ID: string
+  @PrimaryColumn({ type: 'character', length: 40 })
   public SI_ID: string
   @PrimaryColumn({ type: 'character', length: 2 })
   public VERSION: string

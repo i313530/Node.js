@@ -21,6 +21,10 @@ __decorate([
     __metadata("design:type", String)
 ], ScopeitemT.prototype, "VERSION", void 0);
 __decorate([
+    typeorm_1.PrimaryColumn({ type: 'character', length: 2 }),
+    __metadata("design:type", String)
+], ScopeitemT.prototype, "LANGU", void 0);
+__decorate([
     typeorm_1.Column({ nullable: true }),
     __metadata("design:type", String)
 ], ScopeitemT.prototype, "SI_NAME", void 0);

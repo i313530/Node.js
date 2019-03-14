@@ -1,46 +1,50 @@
-function loadFeedbacks() {
-  $.ajax('/api/feedbacks', {
-    success: function(feedbacks) {
-      feedbacks.forEach(function(d) {
-        appendFeedback(d)
+function loadSIs() {
+  $.ajax('/api/Scopeitem', {
+    success: function(SIs) {
+      SIs.forEach(function(d) {
+        appendScopeitem(d)
       })
     }
   })
 }
-function appendFeedback(feedback) {
-  $('#feedbackList').append(createFeedbackLi(feedback))
+function appendScopeitem(SI) {
+  $('#ScopeitemList').append(createScopeitemLi(SI))
 }
-function createFeedbackLi(feedback) {
-  return $(`<li id="${feedback.id}">
-    <span>${feedback.createdAt}: ${feedback.text}</span>
-    <input value=${feedback.text}/>
-    <span><button onclick="removeFeedback(${feedback.id})">Remove</button></span>
+function createScopeitemLi(SI) {
+  return $(`<li id="${SI.SI_PKG_ID}">
+    <span>${SI.SI_SI_ID} / ${SI.SI_CREATED_AT}</span>
+    <input value="${SI.TXT_SI_NAME}">
+    <span><button onclick="removeScopeitem('${SI.SI_SI_ID}')">Remove SI</button></span>
    </li>`)
 }
-function addFeedback() {
-  var $feedbackInput = $('#feedbackInput')
-  $.ajax('/api/feedbacks', {
+
+function addSI() {
+  var $SIidinput = $('#SIidInput')
+  var $SInameInput = $('#SInameInput')
+  $.ajax('/api/Scopeitem', {
     method: 'POST',
     data: {
-      text: $feedbackInput.val()
+      SI_ID: $SIidinput.val(),
+      SI_NAME: $SInameInput.val()
     },
-    success: function(feedback) {
-      appendFeedback(feedback)
-      $feedbackInput.val('')
+    success: function(SI) {
+      appendScopeitem(SI)
+      $SIidinput.val('')
+      $SInameInput.val('')
     }
   })
 }
-function removeFeedback(id) {
-  $.ajax(`/api/feedbacks/${id}`, {
+function removeScopeitem(id) {
+  $.ajax(`/api/Scopeitem/${id}`, {
     method: 'DELETE',
     success: function(resp) {
-      removeFeedbackLi(id)
+      removeScopeitemLi(id)
     }
   })
 }
 
-function removeFeedbackLi(feedbackId) {
-  $(`#${feedbackId}`).remove()
+function removeScopeitemLi(SIId) {
+  $(`#${SIId}`).remove()
 }
 
-loadFeedbacks()
+loadSIs()

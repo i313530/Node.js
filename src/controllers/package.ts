@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import PKGService from '../services/pkg'
-// import PKGSIAService from '../services/pkgsiA'
+import PKGSIAService from '../services/pkgsiA'
 
 /* API Controllers */
 export const getPackages = async (req: Request, res: Response) => {
@@ -54,7 +54,53 @@ export const getOnePackage = async (req: Request, res: Response) => {
     const id = req.params.id
     const oPackage = await PKGService.PKGHead(id)
     res.json(oPackage)
-    console.log()
+  } catch (err) {
+    // console.log(err)
+    res.status(500)
+    res.send(err)
+  }
+}
+export const getAssignments = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id
+    const oAssign = await PKGSIAService.getPKGSIA(id)
+    res.json(oAssign)
+  } catch (err) {  
+    console.log(err) 
+    res.status(500)
+    res.send(err)
+  }
+}
+export const addAssignment = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.pkgid
+    const si = req.params.siid
+    console.log(si)
+    const oAssign = await PKGSIAService.addPKGSIA(id,si,null)
+    res.json(oAssign)
+  } catch (err) {
+    console.log(err)
+    res.status(500)
+    res.send(err)
+  }
+}
+export const removeAssignment = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.pkgid
+    const si = req.params.siid
+    await PKGSIAService.removePKGSIA(id,si)
+    res.json('OK')
+  } catch (err) {
+    // console.log(err)
+    res.status(500)
+    res.send(err)
+  }
+}
+export const getUnassignments = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id
+    const oAssign = await PKGSIAService.getUnassignSIs(id)
+    res.json(oAssign)
   } catch (err) {
     // console.log(err)
     res.status(500)

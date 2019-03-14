@@ -1,0 +1,1 @@
+{"version":3,"file":"UnassignSI.js","sourceRoot":"","sources":["../../src/routes/UnassignSI.ts"],"names":[],"mappings":";;;;;;;;;AAAA,qCAA6C;AAC7C,uEAAwD;AAExD,MAAM,SAAS,GAAW,gBAAM,EAAE,CAAA;AAElC,kBAAe,CAAC,GAAgB,EAAE,EAAE;IAClC,SAAS,CAAC,GAAG,CAAC,MAAM,EAAE,cAAc,CAAC,gBAAgB,CAAC,CAAA;IACtD,GAAG,CAAC,GAAG,CAAC,iBAAiB,EAAE,SAAS,CAAC,CAAA;AACvC,CAAC,CAAA"}

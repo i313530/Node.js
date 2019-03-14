@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const pkg_1 = __importDefault(require("../services/pkg"));
-// import PKGSIAService from '../services/pkgsiA'
+const pkgsiA_1 = __importDefault(require("../services/pkgsiA"));
 /* API Controllers */
 exports.getPackages = (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
@@ -69,7 +69,57 @@ exports.getOnePackage = (req, res) => __awaiter(this, void 0, void 0, function* 
         const id = req.params.id;
         const oPackage = yield pkg_1.default.PKGHead(id);
         res.json(oPackage);
-        console.log();
+    }
+    catch (err) {
+        // console.log(err)
+        res.status(500);
+        res.send(err);
+    }
+});
+exports.getAssignments = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const id = req.params.id;
+        const oAssign = yield pkgsiA_1.default.getPKGSIA(id);
+        res.json(oAssign);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500);
+        res.send(err);
+    }
+});
+exports.addAssignment = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const id = req.params.pkgid;
+        const si = req.params.siid;
+        console.log(si);
+        const oAssign = yield pkgsiA_1.default.addPKGSIA(id, si, null);
+        res.json(oAssign);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500);
+        res.send(err);
+    }
+});
+exports.removeAssignment = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const id = req.params.pkgid;
+        const si = req.params.siid;
+        yield pkgsiA_1.default.removePKGSIA(id, si);
+        res.json('OK');
+    }
+    catch (err) {
+        // console.log(err)
+        res.status(500);
+        res.send(err);
+    }
+});
+exports.getUnassignments = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const id = req.params.id;
+        const oAssign = yield pkgsiA_1.default.getUnassignSIs(id);
+        res.json(oAssign);
     }
     catch (err) {
         // console.log(err)

@@ -5,7 +5,8 @@ export class ScopeitemT {
   public SI_ID: string
   @PrimaryColumn({ type: 'character', length: 2 })
   public VERSION: string
-  public LANGU: string
+  @PrimaryColumn({ type: 'character', length: 2 })
+    public LANGU: string
   @Column({ nullable: true })
   public SI_NAME: string
   public SI_DESC: string
