@@ -11,7 +11,7 @@ function appendScopeitem(SI) {
   $('#ScopeitemList').append(createScopeitemLi(SI))
 }
 function createScopeitemLi(SI) {
-  return $(`<li id="${SI.SI_PKG_ID}">
+  return $(`<li id="${SI.SI_SI_ID.trim()}">
     <span>${SI.SI_SI_ID} / ${SI.SI_CREATED_AT}</span>
     <input value="${SI.TXT_SI_NAME}">
     <span><button onclick="removeScopeitem('${SI.SI_SI_ID}')">Remove SI</button></span>

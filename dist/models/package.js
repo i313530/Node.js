@@ -22,6 +22,14 @@ __decorate([
     __metadata("design:type", String)
 ], Package.prototype, "VERSION", void 0);
 __decorate([
+    typeorm_1.Column({ type: 'character', length: 1, nullable: true }),
+    __metadata("design:type", String)
+], Package.prototype, "COMPLETION", void 0);
+__decorate([
+    typeorm_1.Column({ nullable: true }),
+    __metadata("design:type", String)
+], Package.prototype, "LICENSE", void 0);
+__decorate([
     typeorm_1.Column({ type: 'character', length: 20, nullable: true }),
     __metadata("design:type", String)
 ], Package.prototype, "CREATED_BY", void 0);

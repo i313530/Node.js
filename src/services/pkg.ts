@@ -38,7 +38,7 @@ const getPKG = async () => {
 const PKGHead = async (ID: string) => {
   const selectPKG = await getConnection()
     .createQueryBuilder()
-    .select(['PKG.PKG_ID', 'PKG.CREATED_AT', 'PKG.CHANGED_AT','TXT.PKG_NAME'])
+    .select(['PKG.PKG_ID', 'PKG.CREATED_AT', 'PKG.CHANGED_AT', 'TXT.PKG_NAME'])
     .from('Package', 'PKG')
     .innerJoin('PackageT', 'TXT', 'TXT.PKG_ID = PKG.PKG_ID')
     .where('PKG.PKG_ID = :id', { id: ID })
@@ -76,12 +76,19 @@ const removePKG = async (PKGID: string) => {
   await PKGRepo.remove(oPackag)
   await PKGTRepo.remove(oPackagT)
 }
-const renamePKG = async (PKGID: string, name: string) => {
+const renamePKG = async (PKGID: string, name: string, Langu: string) => {
   const PKGRepo = getManager().getRepository(Package)
   const oPackag = await PKGRepo.findOne({ PKG_ID: PKGID })
   const PKGTRepo = getManager().getRepository(PackageT)
   const oPackagT = await PKGTRepo.findOne({ PKG_ID: PKGID })
-  oPackagT.LANGU = 'EN'
+  switch (Langu) {
+    case 'en-US':
+      oPackagT.LANGU = 'EN'
+      break
+    case 'zh-CN':
+      oPackagT.LANGU = 'CN'
+      break
+  }
   oPackagT.PKG_NAME = name
   await PKGTRepo.save(oPackagT)
   oPackag.CHANGED_AT = moment().format('YYYY-MM-DD HH:mm:ss')

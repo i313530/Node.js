@@ -16,7 +16,19 @@ const getSIs = async () => {
     .getRawMany()
   return selectSI
 }
+const getOneSI = async (id:string) => {
 
+  const selectSI = await getConnection()
+    .createQueryBuilder()
+    .select(['SI.SI_ID', 'SI.CREATED_AT', 'TXT.SI_NAME'])
+    .from('Scopeitem', 'SI')
+    .innerJoin('ScopeitemT', 'TXT', 'TXT.SI_ID = SI.SI_ID')
+    .where("TXT.LANGU = 'EN'")
+    .andWhere('SI.SI_ID = :siid',{siid:id})
+    .getRawMany()
+
+  return selectSI
+}
 const addSI = async (SI_ID: string, VERSION: string, SI_NAME: string) => {
   const SIRepo = getManager().getRepository(Scopeitem)
   const SITRepo = getManager().getRepository(ScopeitemT)
@@ -52,5 +64,6 @@ const removeSI = async (SIID: string) => {
 export default {
   getSIs,
   addSI,
-  removeSI
+  removeSI,
+  getOneSI
 }

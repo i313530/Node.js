@@ -87,12 +87,19 @@ const removePKG = (PKGID) => __awaiter(this, void 0, void 0, function* () {
     yield PKGRepo.remove(oPackag);
     yield PKGTRepo.remove(oPackagT);
 });
-const renamePKG = (PKGID, name) => __awaiter(this, void 0, void 0, function* () {
+const renamePKG = (PKGID, name, Langu) => __awaiter(this, void 0, void 0, function* () {
     const PKGRepo = typeorm_1.getManager().getRepository(package_1.Package);
     const oPackag = yield PKGRepo.findOne({ PKG_ID: PKGID });
     const PKGTRepo = typeorm_1.getManager().getRepository(packageT_1.PackageT);
     const oPackagT = yield PKGTRepo.findOne({ PKG_ID: PKGID });
-    oPackagT.LANGU = 'EN';
+    switch (Langu) {
+        case 'en-US':
+            oPackagT.LANGU = 'EN';
+            break;
+        case 'zh-CN':
+            oPackagT.LANGU = 'CN';
+            break;
+    }
     oPackagT.PKG_NAME = name;
     yield PKGTRepo.save(oPackagT);
     oPackag.CHANGED_AT = moment_1.default().format('YYYY-MM-DD HH:mm:ss');

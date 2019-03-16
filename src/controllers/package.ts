@@ -40,8 +40,9 @@ export const removePackage = async (req: Request, res: Response) => {
 export const renamePackage = async (req: Request, res: Response) => {
   try {
     const id = req.params.id
-    const pkgname = req.params.pkgname
-    await PKGService.renamePKG(id, pkgname)
+    const pkgname = req.body.PKG_NAME
+    const Langu = req.body.LANGU
+    await PKGService.renamePKG(id, pkgname,Langu)
     res.send('ok')
   } catch (err) {
     // console.log(err)
@@ -49,6 +50,7 @@ export const renamePackage = async (req: Request, res: Response) => {
     res.send(err)
   }
 }
+
 export const getOnePackage = async (req: Request, res: Response) => {
   try {
     const id = req.params.id
@@ -75,7 +77,6 @@ export const addAssignment = async (req: Request, res: Response) => {
   try {
     const id = req.params.pkgid
     const si = req.params.siid
-    console.log(si)
     const oAssign = await PKGSIAService.addPKGSIA(id,si,null)
     res.json(oAssign)
   } catch (err) {

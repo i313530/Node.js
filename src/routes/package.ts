@@ -8,6 +8,6 @@ export default (app: Application) => {
   ApiRouter.post('/', PKGController.addPackage)
   ApiRouter.delete('/:id', PKGController.removePackage)
   ApiRouter.get('/:id', PKGController.getOnePackage)
-  ApiRouter.put('/:id/:pkgname', PKGController.renamePackage)
+  ApiRouter.put('/:id', PKGController.renamePackage)
   app.use('/api/packages', ApiRouter)
 }

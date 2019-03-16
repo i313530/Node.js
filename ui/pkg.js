@@ -1,3 +1,6 @@
+// import _ from './js/lodash'
+// var lodash = _.noConflict()
+
 function loadPackages() {
   $.ajax('/api/packages', {
     success: function(packages) {
@@ -11,9 +14,11 @@ function appendPackage(Package) {
   $('#PackageList').append(createPackageLi(Package))
 }
 function createPackageLi(Package) {
-  return $(`<li id="${Package.PKG_PKG_ID}">
-    <span><a href="./PKGDetail.html?id=${Package.PKG_PKG_ID}">${Package.PKG_PKG_ID}</a>${Package.PKG_CREATED_AT}</span>
-    <input value="${Package.TXT_PKG_NAME}">
+  return $(`<li id="${Package.PKG_PKG_ID.trim()}">
+    <span><a href="./PKGDetail.html?id=${Package.PKG_PKG_ID}">${Package.PKG_PKG_ID} / </a>${
+    Package.PKG_CREATED_AT
+  }</span>
+    <input value="${Package.TXT_PKG_NAME}" disabled/>
     <span><button onclick="removePackage('${Package.PKG_PKG_ID}')">Remove PKG</button></span>
    </li>`)
 }
@@ -35,13 +40,39 @@ function addPackage() {
   })
 }
 function removePackage(id) {
-  $.ajax(`/api/packages/${id}`, {
-    method: 'DELETE',
-    success: function(resp) {
-      removePackageLi(id)
+  $.ajax(`/api/pkgsiA/${id}`, {
+    method: 'GET',
+    success: function(Assignments) {
+      var checkresult = _.size(Assignments)
+      if (checkresult == 0) {
+        $.ajax(`/api/packages/${id}`, {
+          method: 'DELETE',
+          success: function(resp) {
+            removePackageLi(id)
+          }
+        })
+      } else {
+        alert("You can't delete it!")
+      }
+    },
+    error: function() {
+      alert("You can't delete it!")
     }
   })
 }
+
+// function removePackage(id) {
+//   if (await checkDeletable(id)) {
+//     $.ajax(`/api/packages/${id}`, {
+//       method: 'DELETE',
+//       success: function(resp) {
+//         removePackageLi(id)
+//       }
+//     })
+//   } else {
+//     alert("You can't delete it!")
+//   }
+// }
 
 function removePackageLi(packageId) {
   $(`#${packageId}`).remove()

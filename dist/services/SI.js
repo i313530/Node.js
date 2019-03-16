@@ -26,6 +26,17 @@ const getSIs = () => __awaiter(this, void 0, void 0, function* () {
         .getRawMany();
     return selectSI;
 });
+const getOneSI = (id) => __awaiter(this, void 0, void 0, function* () {
+    const selectSI = yield typeorm_1.getConnection()
+        .createQueryBuilder()
+        .select(['SI.SI_ID', 'SI.CREATED_AT', 'TXT.SI_NAME'])
+        .from('Scopeitem', 'SI')
+        .innerJoin('ScopeitemT', 'TXT', 'TXT.SI_ID = SI.SI_ID')
+        .where("TXT.LANGU = 'EN'")
+        .andWhere('SI.SI_ID = :siid', { siid: id })
+        .getRawMany();
+    return selectSI;
+});
 const addSI = (SI_ID, VERSION, SI_NAME) => __awaiter(this, void 0, void 0, function* () {
     const SIRepo = typeorm_1.getManager().getRepository(SI_1.Scopeitem);
     const SITRepo = typeorm_1.getManager().getRepository(SIT_1.ScopeitemT);
@@ -61,6 +72,7 @@ const removeSI = (SIID) => __awaiter(this, void 0, void 0, function* () {
 exports.default = {
     getSIs,
     addSI,
-    removeSI
+    removeSI,
+    getOneSI
 };
 //# sourceMappingURL=SI.js.map

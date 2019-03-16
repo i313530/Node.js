@@ -25,6 +25,18 @@ exports.getScopeitems = (req, res) => __awaiter(this, void 0, void 0, function* 
         res.send(err);
     }
 });
+exports.getOneSI = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const SIid = req.params.id;
+        const Scopeitems = yield SI_1.default.getOneSI(SIid);
+        res.json(Scopeitems);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500);
+        res.send(err);
+    }
+});
 exports.addScopeitem = (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
         const SIid = req.body.SI_ID;

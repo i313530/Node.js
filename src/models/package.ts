@@ -10,7 +10,10 @@ export class Package {
 
   @PrimaryColumn({ type: 'character', length: 2 })
   public VERSION: string
-
+  @Column({ type: 'character', length: 1,nullable: true })
+  public COMPLETION: string
+  @Column({ nullable: true })
+  public LICENSE: string
   @Column({ type: 'character', length: 20, nullable: true })
   public CREATED_BY: string
 

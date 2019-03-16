@@ -33,20 +33,25 @@ const addPKGSIA = (PKG_ID, SI_ID, VERSION) => __awaiter(this, void 0, void 0, fu
     oPkgSiA.PKG_ID = PKG_ID;
     oPkgSiA.SI_ID = SI_ID;
     if (VERSION === null) {
-        oPkgSiA.VERSION = VERSION;
-    }
-    else {
         oPkgSiA.VERSION = 'D';
     }
-    // oPkgSiA.SI_ORDER = await getMax(PKG_ID)
-    console.log(oPkgSiA);
+    else {
+        oPkgSiA.VERSION = VERSION;
+    }
+    oPkgSiA.SI_ORDER = yield getMax(PKG_ID);
+    oPkgSiA.SI_ORDER++;
     return yield PKGSIARepo.save(oPkgSiA);
 });
 const getMax = (id) => __awaiter(this, void 0, void 0, function* () {
     const PKGSIARepo = typeorm_1.getManager().getRepository(PkgSiA_1.PkgSiAssign);
     const allSi = yield PKGSIARepo.find({ PKG_ID: id });
-    const maxline = lodash_1.default.maxBy(allSi, 'SI_ORDER');
-    return maxline.SI_ORDER;
+    if (allSi.length === 0) {
+        return 0;
+    }
+    else {
+        const maxline = lodash_1.default.maxBy(allSi, 'SI_ORDER');
+        return maxline.SI_ORDER;
+    }
 });
 const removePKGSIA = (PKGID, SIID) => __awaiter(this, void 0, void 0, function* () {
     const PKGARepo = typeorm_1.getManager().getRepository(PkgSiA_1.PkgSiAssign);

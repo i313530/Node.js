@@ -54,8 +54,9 @@ exports.removePackage = (req, res) => __awaiter(this, void 0, void 0, function* 
 exports.renamePackage = (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
         const id = req.params.id;
-        const pkgname = req.params.pkgname;
-        yield pkg_1.default.renamePKG(id, pkgname);
+        const pkgname = req.body.PKG_NAME;
+        const Langu = req.body.LANGU;
+        yield pkg_1.default.renamePKG(id, pkgname, Langu);
         res.send('ok');
     }
     catch (err) {
@@ -92,7 +93,6 @@ exports.addAssignment = (req, res) => __awaiter(this, void 0, void 0, function* 
     try {
         const id = req.params.pkgid;
         const si = req.params.siid;
-        console.log(si);
         const oAssign = yield pkgsiA_1.default.addPKGSIA(id, si, null);
         res.json(oAssign);
     }

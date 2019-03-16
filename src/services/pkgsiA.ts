@@ -22,19 +22,23 @@ const addPKGSIA = async (PKG_ID: string, SI_ID: string, VERSION: string) => {
   oPkgSiA.PKG_ID = PKG_ID
   oPkgSiA.SI_ID = SI_ID
   if (VERSION === null) {
-    oPkgSiA.VERSION = VERSION
-  } else {
     oPkgSiA.VERSION = 'D'
+  } else {
+    oPkgSiA.VERSION = VERSION
   }
-  // oPkgSiA.SI_ORDER = await getMax(PKG_ID)
-  console.log(oPkgSiA)
+  oPkgSiA.SI_ORDER = await getMax(PKG_ID)
+  oPkgSiA.SI_ORDER++
   return await PKGSIARepo.save(oPkgSiA)
 }
 const getMax = async (id: string) => {
   const PKGSIARepo = getManager().getRepository(PkgSiAssign)
   const allSi = await PKGSIARepo.find({ PKG_ID: id })
-  const maxline = _.maxBy(allSi, 'SI_ORDER')
-  return maxline.SI_ORDER
+  if(allSi.length === 0){
+     return 0
+  }else{
+    const maxline = _.maxBy(allSi, 'SI_ORDER')
+    return maxline.SI_ORDER
+  }
 }
 const removePKGSIA = async (PKGID: string, SIID: string) => {
   const PKGARepo = getManager().getRepository(PkgSiAssign)
