@@ -5,7 +5,6 @@ import SIService from '../services/SI'
 export const getScopeitems = async (req: Request, res: Response) => {
   try {
     const Scopeitems = await SIService.getSIs()
-    console.log(Scopeitems)
     res.json(Scopeitems)
   } catch (err) {
     console.log(err)
@@ -31,7 +30,7 @@ export const addScopeitem = async (req: Request, res: Response) => {
     const oSI = await SIService.addSI(SIid, null, SIname)
     res.json(oSI)
   } catch (err) {
-    // console.log(err)
+    console.log(err)
     res.status(500)
     res.send(err)
   }
@@ -42,7 +41,7 @@ export const removeScopeitem = async (req: Request, res: Response) => {
     await SIService.removeSI(id)
     res.send('ok')
   } catch (err) {
-    // console.log(err)
+    console.log(err)
     res.status(500)
     res.send(err)
   }

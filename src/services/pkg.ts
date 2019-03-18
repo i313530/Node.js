@@ -38,7 +38,7 @@ const getPKG = async () => {
 const PKGHead = async (ID: string) => {
   const selectPKG = await getConnection()
     .createQueryBuilder()
-    .select(['PKG.PKG_ID', 'PKG.CREATED_AT', 'PKG.CHANGED_AT', 'TXT.PKG_NAME'])
+    .select(['PKG.PKG_ID', 'PKG.COMPLETION', 'PKG.OutOfScope', 'PKG.CREATED_AT', 'PKG.CHANGED_AT', 'TXT.PKG_NAME'])
     .from('Package', 'PKG')
     .innerJoin('PackageT', 'TXT', 'TXT.PKG_ID = PKG.PKG_ID')
     .where('PKG.PKG_ID = :id', { id: ID })
@@ -56,6 +56,7 @@ const addPKG = async (PKG_ID: string, VERSION: string, PKG_NAME: string) => {
   } else {
     oPackageT.VERSION = oPackage.VERSION = VERSION
   }
+  oPackage.OutOfScope = false
   oPackage.CREATED_AT = oPackage.CHANGED_AT = moment().format('YYYY-MM-DD HH:mm:ss')
   oPackageT.PKG_NAME = PKG_NAME
   oPackageT.LANGU = 'EN'
@@ -94,10 +95,29 @@ const renamePKG = async (PKGID: string, name: string, Langu: string) => {
   oPackag.CHANGED_AT = moment().format('YYYY-MM-DD HH:mm:ss')
   await PKGRepo.save(oPackag)
 }
+
+const savePackage = async (PKG: InputPKG) => {
+  const PKGRepo = getManager().getRepository(Package)
+  const oPackage = await PKGRepo.findOne({ PKG_ID: PKG.PKG_ID })
+  // _.forEach(PKG,function(value,key){
+  //   oPackag[key] = value
+  // })
+  oPackage.COMPLETION = PKG.COMPLETION
+  oPackage.OutOfScope = PKG.OutOfScope
+  oPackage.CHANGED_AT = moment().format('YYYY-MM-DD HH:mm:ss')
+  await PKGRepo.save(oPackage)
+}
+
+class InputPKG {
+  public PKG_ID: string
+  public COMPLETION: string
+  public OutOfScope: boolean
+}
 export default {
   getPKG,
   PKGHead,
   addPKG,
   renamePKG,
-  removePKG
+  removePKG,
+  savePackage
 }

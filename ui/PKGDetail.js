@@ -1,5 +1,6 @@
 var ThisID
 var Langu
+var DD07L
 
 function getUrlParam(name) {
   var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
@@ -16,10 +17,18 @@ function loadPackage() {
   var id = getUrlParam('id')
   ThisID = id
   Langu = navigator.language
+  $.ajax('/api/domain/', {
+    method: 'GET',
+    success: function(DD07) {
+      DD07L = DD07
+    }
+  })
   $.ajax(`/api/packages/${id}`, {
     method: 'GET',
     success: function(package) {
       appendPackage(package)
+      // $('#OutOfScope').val(package.PKG_OutOfScope)
+      fulfillselect(package.PKG_COMPLETION)
     }
   })
   $.ajax(`/api/pkgsiA/${id}`, {
@@ -54,12 +63,13 @@ function addAssign(SI_ID) {
     success: function(SI) {
       removeUnassignLi(SI.SI_ID)
       addAssignLi(SI.SI_ID)
+      resetLastChange()
     }
   })
 }
 function addAssignLi(ID) {
   $.ajax(`/api/Scopeitem/${ID}`, {
-    method:'GET',
+    method: 'GET',
     success: function(SIs) {
       SIs.forEach(function(d) {
         appendSI2Assign(d)
@@ -94,6 +104,7 @@ function removeAssign(id) {
     success: function(resp) {
       removeAssignLi(id)
       appendUnassigns(id)
+      resetLastChange()
     }
   })
 }
@@ -106,6 +117,7 @@ function appendPackage(Package) {
 }
 
 function appendDetail(Package) {
+  var tmp_s = Package.PKG_OutOfScope ? 'checked' : ''
   return $(`<div>
     <text>Package ID: ${Package.PKG_PKG_ID}</text> 
     </p>
@@ -113,10 +125,40 @@ function appendDetail(Package) {
     <input type="text" id="PkgnameInput" value = ${Package.TXT_PKG_NAME}>
     <button onclick="renamePackage()">Rename PKG</button> 
     </p>
+    <text>Completion Status: </text>
+    <select id="CompSel" onchange="addSavebutton()"></select>   
+    </p>
+    <input type="checkbox" id="OutOfScope" onclick="addSavebutton()" ${tmp_s}>Out of Scope <br>
     <text>Created at: ${Package.PKG_CREATED_AT}</text>   
     </p>
     <text id="Last">Last changed at: ${Package.PKG_CHANGED_AT}</text>       
     </div>`)
+}
+function addSavebutton() {
+  var savebotton = document.getElementById('SaveBotton')
+  if (savebotton == null) {
+    return $('#PackageHeader').append(`<button id="SaveBotton" onclick="SavePackage()">Save</button>`)
+  } else {
+    $('#SaveBotton').show()
+  }
+}
+function SavePackage() {
+  $.ajax(`/api/packages/`, {
+    method: 'MERGE',
+    data: {
+      PKG_ID: ThisID,
+      COMPLETION: $('#CompSel').val(),
+      OutOfScope: $('#OutOfScope').prop('checked') 
+    },
+    success: function() {
+      alert('succeed!')
+      resetLastChange()
+      $('SaveBotton').hide()
+    },
+    error: function() {
+      alert('Failed!')
+    }
+  })
 }
 
 function renamePackage() {
@@ -126,7 +168,7 @@ function renamePackage() {
     data: {
       LANGU: Langu,
       PKG_NAME: $PkgnameInput.val()
-    },  
+    },
     success: function() {
       alert('succeed!')
       resetLastChange()
@@ -140,6 +182,22 @@ function resetLastChange() {
   // return ThisPKG.PKG_CHANGED_AT = new Date().toTimeString()
   var ts = new Date().toLocaleString()
   $('#Last')[0].innerHTML = 'Last changed at: ' + ts
+}
+
+function fulfillselect(COMPLETION) {
+  // $('#CompSel').append(`<option value =''> </option>`)
+  _.forEach(DD07L, function(DD07) {
+    if (DD07.Name == 'Completion') {
+      $('#CompSel').append(`<option value ='${DD07.Key}'>${DD07.Value}</option>`)
+    }
+  })
+  if (COMPLETION == null) {
+    $('#CompSel').val('P')
+    // $('#CompSel').val = attr('value', 'P')
+    // $('#CompSel').attr('text', 'In preparation')
+  } else {
+    $('#CompSel').val(COMPLETION)
+  }
 }
 
 loadPackage()

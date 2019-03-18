@@ -16,7 +16,6 @@ const SI_1 = __importDefault(require("../services/SI"));
 exports.getScopeitems = (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
         const Scopeitems = yield SI_1.default.getSIs();
-        console.log(Scopeitems);
         res.json(Scopeitems);
     }
     catch (err) {
@@ -45,7 +44,7 @@ exports.addScopeitem = (req, res) => __awaiter(this, void 0, void 0, function* (
         res.json(oSI);
     }
     catch (err) {
-        // console.log(err)
+        console.log(err);
         res.status(500);
         res.send(err);
     }
@@ -57,7 +56,7 @@ exports.removeScopeitem = (req, res) => __awaiter(this, void 0, void 0, function
         res.send('ok');
     }
     catch (err) {
-        // console.log(err)
+        console.log(err);
         res.status(500);
         res.send(err);
     }

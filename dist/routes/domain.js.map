@@ -1,0 +1,1 @@
+{"version":3,"file":"domain.js","sourceRoot":"","sources":["../../src/routes/domain.ts"],"names":[],"mappings":";;;;;;;;;AAAA,qCAA6C;AAC7C,wEAAyD;AAEzD,MAAM,SAAS,GAAW,gBAAM,EAAE,CAAA;AAElC,kBAAe,CAAC,GAAgB,EAAE,EAAE;IAClC,SAAS,CAAC,GAAG,CAAC,GAAG,EAAE,gBAAgB,CAAC,eAAe,CAAC,CAAA;IACpD,GAAG,CAAC,GAAG,CAAC,aAAa,EAAE,SAAS,CAAC,CAAA;AACnC,CAAC,CAAA"}

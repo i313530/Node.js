@@ -14,7 +14,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 const PkgSiA_1 = require("../models/PkgSiA");
 const SI_1 = require("../models/SI");
+const package_1 = require("../models/package");
 const lodash_1 = __importDefault(require("lodash"));
+const moment_1 = __importDefault(require("moment"));
 const getPKGSIA = (PKGID) => __awaiter(this, void 0, void 0, function* () {
     const selectData = yield typeorm_1.getConnection()
         .createQueryBuilder()
@@ -40,7 +42,12 @@ const addPKGSIA = (PKG_ID, SI_ID, VERSION) => __awaiter(this, void 0, void 0, fu
     }
     oPkgSiA.SI_ORDER = yield getMax(PKG_ID);
     oPkgSiA.SI_ORDER++;
-    return yield PKGSIARepo.save(oPkgSiA);
+    yield PKGSIARepo.save(oPkgSiA);
+    const PKGRepo = typeorm_1.getManager().getRepository(package_1.Package);
+    const oPackage = yield PKGRepo.findOne({ PKG_ID: oPkgSiA.PKG_ID });
+    oPackage.CHANGED_AT = moment_1.default().format('YYYY-MM-DD HH:mm:ss');
+    yield PKGRepo.save(oPackage);
+    return oPkgSiA;
 });
 const getMax = (id) => __awaiter(this, void 0, void 0, function* () {
     const PKGSIARepo = typeorm_1.getManager().getRepository(PkgSiA_1.PkgSiAssign);
@@ -56,7 +63,12 @@ const getMax = (id) => __awaiter(this, void 0, void 0, function* () {
 const removePKGSIA = (PKGID, SIID) => __awaiter(this, void 0, void 0, function* () {
     const PKGARepo = typeorm_1.getManager().getRepository(PkgSiA_1.PkgSiAssign);
     const oPkgSiA = yield PKGARepo.findOne({ PKG_ID: PKGID, SI_ID: SIID });
-    return PKGARepo.remove(oPkgSiA);
+    yield PKGARepo.remove(oPkgSiA);
+    const PKGRepo = typeorm_1.getManager().getRepository(package_1.Package);
+    const oPackage = yield PKGRepo.findOne({ PKG_ID: PKGID });
+    oPackage.CHANGED_AT = moment_1.default().format('YYYY-MM-DD HH:mm:ss');
+    yield PKGRepo.save(oPackage);
+    return 'OK';
 });
 const getUnassignSIs = (PKGID) => __awaiter(this, void 0, void 0, function* () {
     const PKGSIARepo = typeorm_1.getManager().getRepository(PkgSiA_1.PkgSiAssign);

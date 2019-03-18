@@ -42,7 +42,7 @@ export const renamePackage = async (req: Request, res: Response) => {
     const id = req.params.id
     const pkgname = req.body.PKG_NAME
     const Langu = req.body.LANGU
-    await PKGService.renamePKG(id, pkgname,Langu)
+    await PKGService.renamePKG(id, pkgname, Langu)
     res.send('ok')
   } catch (err) {
     // console.log(err)
@@ -67,8 +67,8 @@ export const getAssignments = async (req: Request, res: Response) => {
     const id = req.params.id
     const oAssign = await PKGSIAService.getPKGSIA(id)
     res.json(oAssign)
-  } catch (err) {  
-    console.log(err) 
+  } catch (err) {
+    console.log(err)
     res.status(500)
     res.send(err)
   }
@@ -77,7 +77,7 @@ export const addAssignment = async (req: Request, res: Response) => {
   try {
     const id = req.params.pkgid
     const si = req.params.siid
-    const oAssign = await PKGSIAService.addPKGSIA(id,si,null)
+    const oAssign = await PKGSIAService.addPKGSIA(id, si, null)
     res.json(oAssign)
   } catch (err) {
     console.log(err)
@@ -89,10 +89,10 @@ export const removeAssignment = async (req: Request, res: Response) => {
   try {
     const id = req.params.pkgid
     const si = req.params.siid
-    await PKGSIAService.removePKGSIA(id,si)
+    await PKGSIAService.removePKGSIA(id, si)
     res.json('OK')
   } catch (err) {
-    // console.log(err)
+    console.log(err)
     res.status(500)
     res.send(err)
   }
@@ -103,7 +103,29 @@ export const getUnassignments = async (req: Request, res: Response) => {
     const oAssign = await PKGSIAService.getUnassignSIs(id)
     res.json(oAssign)
   } catch (err) {
-    // console.log(err)
+    console.log(err)
+    res.status(500)
+    res.send(err)
+  }
+}
+export const savePackage = async (req: Request, res: Response) => {
+  try {
+    // let Scope:string
+    // if(req.body.OutOfScop === 'On'){
+    //   Scope = 'X'
+    // } else {
+    //   Scope = ''
+    // }
+    const oPackage = {
+      PKG_ID: req.body.PKG_ID,
+      COMPLETION: req.body.COMPLETION,
+      OutOfScope: req.body.OutOfScope // === 'true' ? true : false
+    }
+    console.log(req.body.OutOfScope)
+    await PKGService.savePackage(oPackage)
+    res.json(oPackage)
+  } catch (err) {
+    console.log(err)
     res.status(500)
     res.send(err)
   }

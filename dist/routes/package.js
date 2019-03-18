@@ -16,6 +16,7 @@ exports.default = (app) => {
     ApiRouter.delete('/:id', PKGController.removePackage);
     ApiRouter.get('/:id', PKGController.getOnePackage);
     ApiRouter.put('/:id', PKGController.renamePackage);
+    ApiRouter.merge('/', PKGController.savePackage);
     app.use('/api/packages', ApiRouter);
 };
 //# sourceMappingURL=package.js.map

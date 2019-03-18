@@ -48,7 +48,7 @@ const getPKG = () => __awaiter(this, void 0, void 0, function* () {
 const PKGHead = (ID) => __awaiter(this, void 0, void 0, function* () {
     const selectPKG = yield typeorm_1.getConnection()
         .createQueryBuilder()
-        .select(['PKG.PKG_ID', 'PKG.CREATED_AT', 'PKG.CHANGED_AT', 'TXT.PKG_NAME'])
+        .select(['PKG.PKG_ID', 'PKG.COMPLETION', 'PKG.OutOfScope', 'PKG.CREATED_AT', 'PKG.CHANGED_AT', 'TXT.PKG_NAME'])
         .from('Package', 'PKG')
         .innerJoin('PackageT', 'TXT', 'TXT.PKG_ID = PKG.PKG_ID')
         .where('PKG.PKG_ID = :id', { id: ID })
@@ -67,6 +67,7 @@ const addPKG = (PKG_ID, VERSION, PKG_NAME) => __awaiter(this, void 0, void 0, fu
     else {
         oPackageT.VERSION = oPackage.VERSION = VERSION;
     }
+    oPackage.OutOfScope = false;
     oPackage.CREATED_AT = oPackage.CHANGED_AT = moment_1.default().format('YYYY-MM-DD HH:mm:ss');
     oPackageT.PKG_NAME = PKG_NAME;
     oPackageT.LANGU = 'EN';
@@ -105,11 +106,25 @@ const renamePKG = (PKGID, name, Langu) => __awaiter(this, void 0, void 0, functi
     oPackag.CHANGED_AT = moment_1.default().format('YYYY-MM-DD HH:mm:ss');
     yield PKGRepo.save(oPackag);
 });
+const savePackage = (PKG) => __awaiter(this, void 0, void 0, function* () {
+    const PKGRepo = typeorm_1.getManager().getRepository(package_1.Package);
+    const oPackage = yield PKGRepo.findOne({ PKG_ID: PKG.PKG_ID });
+    // _.forEach(PKG,function(value,key){
+    //   oPackag[key] = value
+    // })
+    oPackage.COMPLETION = PKG.COMPLETION;
+    oPackage.OutOfScope = PKG.OutOfScope;
+    oPackage.CHANGED_AT = moment_1.default().format('YYYY-MM-DD HH:mm:ss');
+    yield PKGRepo.save(oPackage);
+});
+class InputPKG {
+}
 exports.default = {
     getPKG,
     PKGHead,
     addPKG,
     renamePKG,
-    removePKG
+    removePKG,
+    savePackage
 };
 //# sourceMappingURL=pkg.js.map

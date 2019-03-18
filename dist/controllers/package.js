@@ -110,7 +110,7 @@ exports.removeAssignment = (req, res) => __awaiter(this, void 0, void 0, functio
         res.json('OK');
     }
     catch (err) {
-        // console.log(err)
+        console.log(err);
         res.status(500);
         res.send(err);
     }
@@ -122,7 +122,30 @@ exports.getUnassignments = (req, res) => __awaiter(this, void 0, void 0, functio
         res.json(oAssign);
     }
     catch (err) {
-        // console.log(err)
+        console.log(err);
+        res.status(500);
+        res.send(err);
+    }
+});
+exports.savePackage = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        // let Scope:string
+        // if(req.body.OutOfScop === 'On'){
+        //   Scope = 'X'
+        // } else {
+        //   Scope = ''
+        // }
+        const oPackage = {
+            PKG_ID: req.body.PKG_ID,
+            COMPLETION: req.body.COMPLETION,
+            OutOfScope: req.body.OutOfScope // === 'true' ? true : false
+        };
+        console.log(req.body.OutOfScope);
+        yield pkg_1.default.savePackage(oPackage);
+        res.json(oPackage);
+    }
+    catch (err) {
+        console.log(err);
         res.status(500);
         res.send(err);
     }

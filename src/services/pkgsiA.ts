@@ -1,8 +1,9 @@
 import { getManager, getConnection } from 'typeorm'
 import { PkgSiAssign } from '../models/PkgSiA'
 import { Scopeitem } from '../models/SI'
+import { Package } from '../models/package'
 import _ from 'lodash'
-
+import moment from 'moment'
 const getPKGSIA = async (PKGID: string) => {
   const selectData = await getConnection()
     .createQueryBuilder()
@@ -28,14 +29,19 @@ const addPKGSIA = async (PKG_ID: string, SI_ID: string, VERSION: string) => {
   }
   oPkgSiA.SI_ORDER = await getMax(PKG_ID)
   oPkgSiA.SI_ORDER++
-  return await PKGSIARepo.save(oPkgSiA)
+  await PKGSIARepo.save(oPkgSiA)
+  const PKGRepo = getManager().getRepository(Package)
+  const oPackage = await PKGRepo.findOne({ PKG_ID: oPkgSiA.PKG_ID })
+  oPackage.CHANGED_AT = moment().format('YYYY-MM-DD HH:mm:ss')
+  await PKGRepo.save(oPackage)
+  return oPkgSiA
 }
 const getMax = async (id: string) => {
   const PKGSIARepo = getManager().getRepository(PkgSiAssign)
   const allSi = await PKGSIARepo.find({ PKG_ID: id })
-  if(allSi.length === 0){
-     return 0
-  }else{
+  if (allSi.length === 0) {
+    return 0
+  } else {
     const maxline = _.maxBy(allSi, 'SI_ORDER')
     return maxline.SI_ORDER
   }
@@ -43,7 +49,12 @@ const getMax = async (id: string) => {
 const removePKGSIA = async (PKGID: string, SIID: string) => {
   const PKGARepo = getManager().getRepository(PkgSiAssign)
   const oPkgSiA = await PKGARepo.findOne({ PKG_ID: PKGID, SI_ID: SIID })
-  return PKGARepo.remove(oPkgSiA)
+  await PKGARepo.remove(oPkgSiA)
+  const PKGRepo = getManager().getRepository(Package)
+  const oPackage = await PKGRepo.findOne({ PKG_ID: PKGID })
+  oPackage.CHANGED_AT = moment().format('YYYY-MM-DD HH:mm:ss')
+  await PKGRepo.save(oPackage)  
+  return 'OK'
 }
 const getUnassignSIs = async (PKGID: string) => {
   const PKGSIARepo = getManager().getRepository(PkgSiAssign)
