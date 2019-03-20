@@ -110,18 +110,12 @@ export const getUnassignments = async (req: Request, res: Response) => {
 }
 export const savePackage = async (req: Request, res: Response) => {
   try {
-    // let Scope:string
-    // if(req.body.OutOfScop === 'On'){
-    //   Scope = 'X'
-    // } else {
-    //   Scope = ''
-    // }
     const oPackage = {
       PKG_ID: req.body.PKG_ID,
       COMPLETION: req.body.COMPLETION,
-      OutOfScope: req.body.OutOfScope // === 'true' ? true : false
+      OutOfScope: req.body.OutOfScope, // === 'true' ? true : false
+      Type: req.body.Type
     }
-    console.log(req.body.OutOfScope)
     await PKGService.savePackage(oPackage)
     res.json(oPackage)
   } catch (err) {

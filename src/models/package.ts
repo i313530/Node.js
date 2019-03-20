@@ -14,6 +14,8 @@ export class Package {
   public COMPLETION: string
   @Column({ type: 'boolean'})
   public OutOfScope: boolean
+  @Column({ type: 'character', length: 1, nullable: true })
+  public Type: string  
   @Column({ type: 'character', length: 20, nullable: true })
   public CREATED_BY: string
 

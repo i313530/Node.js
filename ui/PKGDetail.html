@@ -10,16 +10,33 @@
   </p>
     <div id="PackageHeader"></div>
   </p> </p>
-  <text>Assignments:</text>
+  <dialog id="NewSI">
+    <form method="dialog">
+      <p><label>Create New Scopeitem And Assign </label><br>
+        <text>ID:</text>
+        <input type="text" id="SIidInput" />
+        <text>Name:</text>
+        <input type="text" id="SInameInput" />          
+      </p>
+      <menu>
+        <button value="cancel" onclick="closeSI()">Cancel</button>
+        <button onclick="createNewSI()">Create and Assign</button>
+      </menu>
+    </form>
+  </dialog>  
+  <h5>Assignments:</h5>
+  </p>  
+  <button onclick="callScreen()">Assign New Scopeitem</button>  
   </p>
   <div id="Assignments"></div>    
   </p>
-  <text>Unassignmented Scopeitems:</text>
+  <h5>Unassignmented Scopeitems:</h5>
   </p>  
      <div id="SIList"></div>
   </p> 
     <a href="./pkg.html">Goto Package List</a>    </p>   
     <a href="./si.html">Goto SI List</a>
+
   </body>
   <script src="./js/lodash.js"></script> 
   <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>

@@ -30,6 +30,10 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Package.prototype, "OutOfScope", void 0);
 __decorate([
+    typeorm_1.Column({ type: 'character', length: 1, nullable: true }),
+    __metadata("design:type", String)
+], Package.prototype, "Type", void 0);
+__decorate([
     typeorm_1.Column({ type: 'character', length: 20, nullable: true }),
     __metadata("design:type", String)
 ], Package.prototype, "CREATED_BY", void 0);

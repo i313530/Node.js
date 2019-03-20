@@ -129,18 +129,12 @@ exports.getUnassignments = (req, res) => __awaiter(this, void 0, void 0, functio
 });
 exports.savePackage = (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
-        // let Scope:string
-        // if(req.body.OutOfScop === 'On'){
-        //   Scope = 'X'
-        // } else {
-        //   Scope = ''
-        // }
         const oPackage = {
             PKG_ID: req.body.PKG_ID,
             COMPLETION: req.body.COMPLETION,
-            OutOfScope: req.body.OutOfScope // === 'true' ? true : false
+            OutOfScope: req.body.OutOfScope,
+            Type: req.body.Type
         };
-        console.log(req.body.OutOfScope);
         yield pkg_1.default.savePackage(oPackage);
         res.json(oPackage);
     }

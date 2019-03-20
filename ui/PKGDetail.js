@@ -29,6 +29,7 @@ function loadPackage() {
       appendPackage(package)
       // $('#OutOfScope').val(package.PKG_OutOfScope)
       fulfillselect(package.PKG_COMPLETION)
+      bindClickradio()
     }
   })
   $.ajax(`/api/pkgsiA/${id}`, {
@@ -115,9 +116,40 @@ function removeAssignLi(id) {
 function appendPackage(Package) {
   return $('#PackageHeader').append(appendDetail(Package))
 }
-
+function callScreen() {
+  $('#NewSI').show()
+}
+function closeSI() {
+  $('#NewSI').hide()
+}
+function createNewSI() {
+  var $SIidinput = $('#SIidInput')
+  var $SInameInput = $('#SInameInput')
+  $.ajax('/api/Scopeitem', {
+    method: 'POST',
+    data: {
+      SI_ID: $SIidinput.val(),
+      SI_NAME: $SInameInput.val()
+    },
+    success: function(SI) {
+      console.log(SI)
+      addAssign(SI.SI_SI_ID)
+      $('#NewSI').hide()
+    }
+  })
+}
 function appendDetail(Package) {
-  var tmp_s = Package.PKG_OutOfScope ? 'checked' : ''
+  var t_scope = Package.PKG_OutOfScope ? 'checked' : ''
+  switch (Package.PKG_Type) {
+    case 'C':
+      var t_radio_c = 'checked'
+      break
+    case 'T':
+      var t_radio_t = 'checked'
+      break
+    case '':
+      break
+  }
   return $(`<div>
     <text>Package ID: ${Package.PKG_PKG_ID}</text> 
     </p>
@@ -128,7 +160,10 @@ function appendDetail(Package) {
     <text>Completion Status: </text>
     <select id="CompSel" onchange="addSavebutton()"></select>   
     </p>
-    <input type="checkbox" id="OutOfScope" onclick="addSavebutton()" ${tmp_s}>Out of Scope <br>
+    <input type="checkbox" id="OutOfScope" onclick="addSavebutton()" ${t_scope}>Out of Scope <br>
+    <text>Type</text>   <br>
+    <input type="radio" name="PKGType" value="T" ${t_radio_t}>Technical<br>
+    <input type="radio" name="PKGType" value="C" ${t_radio_c}>Conceptual</p>
     <text>Created at: ${Package.PKG_CREATED_AT}</text>   
     </p>
     <text id="Last">Last changed at: ${Package.PKG_CHANGED_AT}</text>       
@@ -148,12 +183,13 @@ function SavePackage() {
     data: {
       PKG_ID: ThisID,
       COMPLETION: $('#CompSel').val(),
-      OutOfScope: $('#OutOfScope').prop('checked') 
+      OutOfScope: $('#OutOfScope').prop('checked'),
+      Type: $('input[name="PKGType"]:checked').val()
     },
     success: function() {
       alert('succeed!')
       resetLastChange()
-      $('SaveBotton').hide()
+      $('#SaveBotton').hide()
     },
     error: function() {
       alert('Failed!')
@@ -198,6 +234,11 @@ function fulfillselect(COMPLETION) {
   } else {
     $('#CompSel').val(COMPLETION)
   }
+}
+function bindClickradio() {
+  $('input[name="PKGType"]').on('click change', function() {
+    addSavebutton()
+  })
 }
 
 loadPackage()

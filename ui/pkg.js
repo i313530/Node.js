@@ -18,7 +18,7 @@ function createPackageLi(Package) {
     <span><a href="./PKGDetail.html?id=${Package.PKG_PKG_ID}">${Package.PKG_PKG_ID} / </a>${
     Package.PKG_CREATED_AT
   }</span>
-    <input value="${Package.TXT_PKG_NAME}" disabled/>
+    <input value="${Package.TXT_PKG_NAME}" readonly=true/>
     <span><button onclick="removePackage('${Package.PKG_PKG_ID}')">Remove PKG</button></span>
    </li>`)
 }
@@ -56,23 +56,12 @@ function removePackage(id) {
       }
     },
     error: function() {
+  //   throw 'Has Assignments'    
       alert("You can't delete it!")
     }
   })
 }
 
-// function removePackage(id) {
-//   if (await checkDeletable(id)) {
-//     $.ajax(`/api/packages/${id}`, {
-//       method: 'DELETE',
-//       success: function(resp) {
-//         removePackageLi(id)
-//       }
-//     })
-//   } else {
-//     alert("You can't delete it!")
-//   }
-// }
 
 function removePackageLi(packageId) {
   $(`#${packageId}`).remove()
