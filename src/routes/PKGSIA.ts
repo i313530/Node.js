@@ -5,6 +5,7 @@ const ApiRouter: Router = Router()
 
 export default (app: Application) => {
   ApiRouter.post('/:pkgid/:siid', PKGAController.addAssignment)
+  ApiRouter.post('/newsi/:pkgid/:siid', PKGAController.createNewSIandAssign)
   ApiRouter.delete('/:pkgid/:siid', PKGAController.removeAssignment)
   ApiRouter.get('/:id', PKGAController.getAssignments)
   app.use('/api/pkgsiA', ApiRouter)

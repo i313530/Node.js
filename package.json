@@ -33,6 +33,7 @@
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",
     "errorhandler": "^1.5.0",
+    "etag": "^1.8.1",
     "express": "^4.16.4",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",

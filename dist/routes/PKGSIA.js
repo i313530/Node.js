@@ -12,6 +12,7 @@ const PKGAController = __importStar(require("../controllers/package"));
 const ApiRouter = express_1.Router();
 exports.default = (app) => {
     ApiRouter.post('/:pkgid/:siid', PKGAController.addAssignment);
+    ApiRouter.post('/newsi/:pkgid/:siid', PKGAController.createNewSIandAssign);
     ApiRouter.delete('/:pkgid/:siid', PKGAController.removeAssignment);
     ApiRouter.get('/:id', PKGAController.getAssignments);
     app.use('/api/pkgsiA', ApiRouter);

@@ -132,9 +132,9 @@ function createNewSI() {
       SI_NAME: $SInameInput.val()
     },
     success: function(SI) {
-      console.log(SI)
       addAssign(SI.SI_SI_ID)
       $('#NewSI').hide()
+      resetLastChange()
     }
   })
 }

@@ -1,11 +1,11 @@
 import { getManager, getConnection } from 'typeorm'
 import { Scopeitem } from '../models/SI'
 import { ScopeitemT } from '../models/SIT'
+import { SIField } from '../models/SIField'
 import _ from 'lodash'
 import moment from 'moment'
 
 const getSIs = async () => {
-
   const selectSI = await getConnection()
     .createQueryBuilder()
     .select(['SI.SI_ID', 'SI.CREATED_AT', 'TXT.SI_NAME'])
@@ -16,16 +16,15 @@ const getSIs = async () => {
     .getRawMany()
   return selectSI
 }
-const getOneSI = async (id:string) => {
-
+const getOneSI = async (id: string) => {
   const selectSI = await getConnection()
     .createQueryBuilder()
-    .select(['SI.SI_ID', 'SI.CREATED_AT', 'TXT.SI_NAME'])
+    .select(['SI.SI_ID', 'SI.CREATED_AT', 'SI.CHANGED_AT', 'TXT.SI_NAME'])
     .from('Scopeitem', 'SI')
     .innerJoin('ScopeitemT', 'TXT', 'TXT.SI_ID = SI.SI_ID')
     .where("TXT.LANGU = 'EN'")
-    .andWhere('SI.SI_ID = :siid',{siid:id})
-    .getRawMany()
+    .andWhere('SI.SI_ID = :siid', { siid: id })
+    .getRawOne()
 
   return selectSI
 }
@@ -60,10 +59,15 @@ const removeSI = async (SIID: string) => {
   await SIRepo.remove(oSI)
   await SITRepo.remove(oSIT)
 }
-
+const getFields = async (SIID: string) => {
+  const FLDRepo = getManager().getRepository(SIField)
+  const FLDs = await FLDRepo.find({ SI_ID: SIID })
+  return FLDs
+}
 export default {
   getSIs,
   addSI,
   removeSI,
-  getOneSI
+  getOneSI,
+  getFields
 }

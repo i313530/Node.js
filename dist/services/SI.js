@@ -14,6 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 const SI_1 = require("../models/SI");
 const SIT_1 = require("../models/SIT");
+const SIField_1 = require("../models/SIField");
 const moment_1 = __importDefault(require("moment"));
 const getSIs = () => __awaiter(this, void 0, void 0, function* () {
     const selectSI = yield typeorm_1.getConnection()
@@ -29,12 +30,12 @@ const getSIs = () => __awaiter(this, void 0, void 0, function* () {
 const getOneSI = (id) => __awaiter(this, void 0, void 0, function* () {
     const selectSI = yield typeorm_1.getConnection()
         .createQueryBuilder()
-        .select(['SI.SI_ID', 'SI.CREATED_AT', 'TXT.SI_NAME'])
+        .select(['SI.SI_ID', 'SI.CREATED_AT', 'SI.CHANGED_AT', 'TXT.SI_NAME'])
         .from('Scopeitem', 'SI')
         .innerJoin('ScopeitemT', 'TXT', 'TXT.SI_ID = SI.SI_ID')
         .where("TXT.LANGU = 'EN'")
         .andWhere('SI.SI_ID = :siid', { siid: id })
-        .getRawMany();
+        .getRawOne();
     return selectSI;
 });
 const addSI = (SI_ID, VERSION, SI_NAME) => __awaiter(this, void 0, void 0, function* () {
@@ -69,10 +70,16 @@ const removeSI = (SIID) => __awaiter(this, void 0, void 0, function* () {
     yield SIRepo.remove(oSI);
     yield SITRepo.remove(oSIT);
 });
+const getFields = (SIID) => __awaiter(this, void 0, void 0, function* () {
+    const FLDRepo = typeorm_1.getManager().getRepository(SIField_1.SIField);
+    const FLDs = yield FLDRepo.find({ SI_ID: SIID });
+    return FLDs;
+});
 exports.default = {
     getSIs,
     addSI,
     removeSI,
-    getOneSI
+    getOneSI,
+    getFields
 };
 //# sourceMappingURL=SI.js.map

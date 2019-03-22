@@ -10,46 +10,46 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
-let Package = class Package {
+let SIField = class SIField {
 };
 __decorate([
     typeorm_1.PrimaryColumn({ type: 'character', length: 40 }),
     __metadata("design:type", String)
-], Package.prototype, "PKG_ID", void 0);
+], SIField.prototype, "SI_ID", void 0);
+__decorate([
+    typeorm_1.PrimaryColumn({ type: 'character', length: 32 }),
+    __metadata("design:type", String)
+], SIField.prototype, "FIELD", void 0);
 __decorate([
     typeorm_1.PrimaryColumn({ type: 'character', length: 2 }),
     __metadata("design:type", String)
-], Package.prototype, "VERSION", void 0);
+], SIField.prototype, "VERSION", void 0);
 __decorate([
-    typeorm_1.Column({ type: 'character', length: 1, nullable: true }),
+    typeorm_1.Column({ type: 'int' }),
     __metadata("design:type", String)
-], Package.prototype, "COMPLETION", void 0);
+], SIField.prototype, "DISPLAY_ORDER", void 0);
 __decorate([
     typeorm_1.Column({ type: 'boolean' }),
     __metadata("design:type", Boolean)
-], Package.prototype, "OutOfScope", void 0);
+], SIField.prototype, "VISIBILITY", void 0);
 __decorate([
-    typeorm_1.Column({ type: 'character', length: 1, nullable: true }),
+    typeorm_1.Column({ type: 'character', length: 2, nullable: true }),
     __metadata("design:type", String)
-], Package.prototype, "Type", void 0);
+], SIField.prototype, "TYPE", void 0);
 __decorate([
-    typeorm_1.Column({ type: 'character', length: 20, nullable: true }),
+    typeorm_1.Column({ type: 'character', length: 4, nullable: true }),
     __metadata("design:type", String)
-], Package.prototype, "CREATED_BY", void 0);
+], SIField.prototype, "DDTYPE", void 0);
 __decorate([
-    typeorm_1.Column({ type: 'timestamp' }),
+    typeorm_1.Column({ type: 'int', nullable: true }),
     __metadata("design:type", String)
-], Package.prototype, "CREATED_AT", void 0);
+], SIField.prototype, "DDLENG", void 0);
 __decorate([
-    typeorm_1.Column({ type: 'character', length: 20, nullable: true }),
+    typeorm_1.Column({ type: 'character', length: 30, nullable: true }),
     __metadata("design:type", String)
-], Package.prototype, "CHANGED_BY", void 0);
-__decorate([
-    typeorm_1.Column({ type: 'timestamp', nullable: true }),
-    __metadata("design:type", String)
-], Package.prototype, "CHANGED_AT", void 0);
-Package = __decorate([
+], SIField.prototype, "ALIAS", void 0);
+SIField = __decorate([
     typeorm_1.Entity()
-], Package);
-exports.Package = Package;
-//# sourceMappingURL=package.js.map
+], SIField);
+exports.SIField = SIField;
+//# sourceMappingURL=SIField.js.map

@@ -10,46 +10,46 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
-let Package = class Package {
+let SIRec = class SIRec {
 };
 __decorate([
     typeorm_1.PrimaryColumn({ type: 'character', length: 40 }),
     __metadata("design:type", String)
-], Package.prototype, "PKG_ID", void 0);
+], SIRec.prototype, "SI_ID", void 0);
+__decorate([
+    typeorm_1.PrimaryColumn({ type: 'character', length: 40 }),
+    __metadata("design:type", String)
+], SIRec.prototype, "REC_ID", void 0);
 __decorate([
     typeorm_1.PrimaryColumn({ type: 'character', length: 2 }),
     __metadata("design:type", String)
-], Package.prototype, "VERSION", void 0);
+], SIRec.prototype, "VERSION", void 0);
 __decorate([
     typeorm_1.Column({ type: 'character', length: 1, nullable: true }),
     __metadata("design:type", String)
-], Package.prototype, "COMPLETION", void 0);
-__decorate([
-    typeorm_1.Column({ type: 'boolean' }),
-    __metadata("design:type", Boolean)
-], Package.prototype, "OutOfScope", void 0);
+], SIRec.prototype, "AVAILABILITY", void 0);
 __decorate([
     typeorm_1.Column({ type: 'character', length: 1, nullable: true }),
     __metadata("design:type", String)
-], Package.prototype, "Type", void 0);
+], SIRec.prototype, "LIFECYCLE", void 0);
 __decorate([
     typeorm_1.Column({ type: 'character', length: 20, nullable: true }),
     __metadata("design:type", String)
-], Package.prototype, "CREATED_BY", void 0);
+], SIRec.prototype, "CREATED_BY", void 0);
 __decorate([
     typeorm_1.Column({ type: 'timestamp' }),
     __metadata("design:type", String)
-], Package.prototype, "CREATED_AT", void 0);
+], SIRec.prototype, "CREATED_AT", void 0);
 __decorate([
     typeorm_1.Column({ type: 'character', length: 20, nullable: true }),
     __metadata("design:type", String)
-], Package.prototype, "CHANGED_BY", void 0);
+], SIRec.prototype, "CHANGED_BY", void 0);
 __decorate([
     typeorm_1.Column({ type: 'timestamp', nullable: true }),
     __metadata("design:type", String)
-], Package.prototype, "CHANGED_AT", void 0);
-Package = __decorate([
+], SIRec.prototype, "CHANGED_AT", void 0);
+SIRec = __decorate([
     typeorm_1.Entity()
-], Package);
-exports.Package = Package;
-//# sourceMappingURL=package.js.map
+], SIRec);
+exports.SIRec = SIRec;
+//# sourceMappingURL=SI_REC.js.map

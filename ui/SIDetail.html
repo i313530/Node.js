@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <title>Scopeitem:</title>
+    <style>
+      table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+      </style>    
+  </head>
+  <body>
+    <a href="./index.html">Home</a>
+  </p>
+    <div id="SIHeader">
+    <text>Scopeitem ID: </text><text id="SI_ID"></text>  
+    </p>
+    <text>Scopeitem Name:</text>
+    <input type="text" id="SInameInput" >
+    <!-- <button onclick="renamePackage()">Rename PKG</button>  -->
+    </p>
+    <text>Created at:</text><text id="SI_CREATED"></text>   
+    </p>
+    <text id="Last">Last changed at: </text><text id="SI_CHANGED"></text>   
+    </div>
+  </p>  </p> 
+  <h5>Fields:</h5>
+  </p>
+  <div>
+    <table id="Fields">
+      <tr>
+        <th>Field</th>
+        <th>Alias</th> 
+        <th>Visibility</th>
+        <th>Display Order</th>
+      </tr>
+    </table>
+  </div>    
+  </p>
+  <h5>Records</h5>
+  </p>  
+     <div id="Content"></div>
+  </p> 
+    <a href="./pkg.html">Goto Package List</a>    </p>   
+    <a href="./si.html">Goto SI List</a>
+  </body>
+  <script src="./js/lodash.js"></script> 
+  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+  <script src="./SIDetail.js"></script>
+</html>

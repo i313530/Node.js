@@ -10,46 +10,51 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
-let Package = class Package {
+// import { PackageT } from './packageT'
+let Record = class Record {
 };
 __decorate([
     typeorm_1.PrimaryColumn({ type: 'character', length: 40 }),
     __metadata("design:type", String)
-], Package.prototype, "PKG_ID", void 0);
+], Record.prototype, "REC_ID", void 0);
 __decorate([
     typeorm_1.PrimaryColumn({ type: 'character', length: 2 }),
     __metadata("design:type", String)
-], Package.prototype, "VERSION", void 0);
+], Record.prototype, "VERSION", void 0);
 __decorate([
-    typeorm_1.Column({ type: 'character', length: 1, nullable: true }),
+    typeorm_1.Column({ type: 'character', length: 32 }),
     __metadata("design:type", String)
-], Package.prototype, "COMPLETION", void 0);
+], Record.prototype, "TABLE", void 0);
 __decorate([
-    typeorm_1.Column({ type: 'boolean' }),
-    __metadata("design:type", Boolean)
-], Package.prototype, "OutOfScope", void 0);
-__decorate([
-    typeorm_1.Column({ type: 'character', length: 1, nullable: true }),
+    typeorm_1.Column({ type: 'character', length: 40, nullable: true }),
     __metadata("design:type", String)
-], Package.prototype, "Type", void 0);
+], Record.prototype, "KEY_HASH", void 0);
+__decorate([
+    typeorm_1.Column({ nullable: true }),
+    __metadata("design:type", String)
+], Record.prototype, "PRIMKEY", void 0);
 __decorate([
     typeorm_1.Column({ type: 'character', length: 20, nullable: true }),
     __metadata("design:type", String)
-], Package.prototype, "CREATED_BY", void 0);
+], Record.prototype, "OWNER", void 0);
+__decorate([
+    typeorm_1.Column({ type: 'character', length: 20, nullable: true }),
+    __metadata("design:type", String)
+], Record.prototype, "CREATED_BY", void 0);
 __decorate([
     typeorm_1.Column({ type: 'timestamp' }),
     __metadata("design:type", String)
-], Package.prototype, "CREATED_AT", void 0);
+], Record.prototype, "CREATED_AT", void 0);
 __decorate([
     typeorm_1.Column({ type: 'character', length: 20, nullable: true }),
     __metadata("design:type", String)
-], Package.prototype, "CHANGED_BY", void 0);
+], Record.prototype, "CHANGED_BY", void 0);
 __decorate([
     typeorm_1.Column({ type: 'timestamp', nullable: true }),
     __metadata("design:type", String)
-], Package.prototype, "CHANGED_AT", void 0);
-Package = __decorate([
+], Record.prototype, "CHANGED_AT", void 0);
+Record = __decorate([
     typeorm_1.Entity()
-], Package);
-exports.Package = Package;
-//# sourceMappingURL=package.js.map
+], Record);
+exports.Record = Record;
+//# sourceMappingURL=record.js.map

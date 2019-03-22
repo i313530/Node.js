@@ -46,3 +46,15 @@ export const removeScopeitem = async (req: Request, res: Response) => {
     res.send(err)
   }
 }
+
+export const getFields = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id
+    const oField = await SIService.getFields(id)
+    res.json(oField)
+  } catch (err) {
+    console.log(err)
+    res.status(500)
+    res.send(err)
+  }
+}

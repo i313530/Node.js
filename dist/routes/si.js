@@ -12,6 +12,7 @@ const SIController = __importStar(require("../controllers/SI"));
 const ApiRouter = express_1.Router();
 exports.default = (app) => {
     ApiRouter.get('/', SIController.getScopeitems);
+    ApiRouter.get('/field/:id', SIController.getFields);
     ApiRouter.get('/:id', SIController.getOneSI);
     ApiRouter.post('/', SIController.addScopeitem);
     ApiRouter.delete('/:id', SIController.removeScopeitem);

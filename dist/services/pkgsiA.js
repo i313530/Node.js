@@ -15,8 +15,9 @@ const typeorm_1 = require("typeorm");
 const PkgSiA_1 = require("../models/PkgSiA");
 const SI_1 = require("../models/SI");
 const package_1 = require("../models/package");
-const lodash_1 = __importDefault(require("lodash"));
 const moment_1 = __importDefault(require("moment"));
+const SI_2 = __importDefault(require("../services/SI"));
+const lodash_1 = __importDefault(require("lodash"));
 const getPKGSIA = (PKGID) => __awaiter(this, void 0, void 0, function* () {
     const selectData = yield typeorm_1.getConnection()
         .createQueryBuilder()
@@ -81,6 +82,25 @@ const getUnassignSIs = (PKGID) => __awaiter(this, void 0, void 0, function* () {
     });
     return allSis;
 });
+// import { EntityManager } from "../../node_modules/typeorm/entity-manager/EntityManager";
+const createNewSIandAssign = (PKGID, SI) => __awaiter(this, void 0, void 0, function* () {
+    typeorm_1.getManager().transaction((TransManager) => __awaiter(this, void 0, void 0, function* () {
+        const processPKG = yield TransManager.createQueryBuilder()
+            .select('PKG.PKG_ID')
+            .from('Package', 'PKG')
+            .where('PKG.PKG_ID= :id', { id: PKGID })
+            .setLock('pessimistic_write')
+            .getRawOne();
+        // .catch((err) =>{
+        //   throw err
+        // })
+        yield SI_2.default.addSI(SI.SI_ID, SI.VERSION, SI.currentName);
+        setTimeout(() => {
+            console.log(moment_1.default());
+        }, 60000);
+    }));
+    return 'ok';
+});
 const getallSis = () => __awaiter(this, void 0, void 0, function* () {
     const SIRepo = typeorm_1.getManager().getRepository(SI_1.Scopeitem);
     const allSIs = yield SIRepo.find();
@@ -90,6 +110,7 @@ exports.default = {
     getPKGSIA,
     addPKGSIA,
     removePKGSIA,
-    getUnassignSIs
+    getUnassignSIs,
+    createNewSIandAssign
 };
 //# sourceMappingURL=pkgsiA.js.map

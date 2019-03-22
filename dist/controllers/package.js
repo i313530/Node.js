@@ -144,4 +144,25 @@ exports.savePackage = (req, res) => __awaiter(this, void 0, void 0, function* ()
         res.send(err);
     }
 });
+exports.createNewSIandAssign = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const pkgid = req.params.pkgid;
+        const oSI = {
+            SI_ID: req.params.siid,
+            VERSION: 'D',
+            currentName: '',
+            CHANGED_AT: '',
+            CHANGED_BY: '',
+            CREATED_AT: '',
+            CREATED_BY: ''
+        };
+        pkgsiA_1.default.createNewSIandAssign(pkgid, oSI);
+        res.json('dd');
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500);
+        res.send(err);
+    }
+});
 //# sourceMappingURL=package.js.map

@@ -2,8 +2,9 @@ import { getManager, getConnection } from 'typeorm'
 import { PkgSiAssign } from '../models/PkgSiA'
 import { Scopeitem } from '../models/SI'
 import { Package } from '../models/package'
-import _ from 'lodash'
 import moment from 'moment'
+import SIService from '../services/SI'
+import _ from 'lodash'
 const getPKGSIA = async (PKGID: string) => {
   const selectData = await getConnection()
     .createQueryBuilder()
@@ -53,7 +54,7 @@ const removePKGSIA = async (PKGID: string, SIID: string) => {
   const PKGRepo = getManager().getRepository(Package)
   const oPackage = await PKGRepo.findOne({ PKG_ID: PKGID })
   oPackage.CHANGED_AT = moment().format('YYYY-MM-DD HH:mm:ss')
-  await PKGRepo.save(oPackage)  
+  await PKGRepo.save(oPackage)
   return 'OK'
 }
 const getUnassignSIs = async (PKGID: string) => {
@@ -69,6 +70,31 @@ const getUnassignSIs = async (PKGID: string) => {
 
   return allSis
 }
+// import { EntityManager } from "../../node_modules/typeorm/entity-manager/EntityManager";
+const createNewSIandAssign = async (PKGID: string, SI: Scopeitem) => {
+
+  getManager().transaction(async TransManager => {
+    const processPKG = await TransManager.createQueryBuilder()
+      .select('PKG.PKG_ID')
+      .from('Package', 'PKG')
+      .where('PKG.PKG_ID= :id', { id: PKGID })
+      .setLock('pessimistic_write')
+      .getRawOne()
+    // .catch((err) =>{
+    //   throw err
+    // })
+
+    await SIService.addSI(SI.SI_ID,SI.VERSION,SI.currentName)
+
+
+    setTimeout(() => {
+      console.log(moment())
+    }, 60000)
+
+  })
+
+  return 'ok'
+}
 
 const getallSis = async () => {
   const SIRepo = getManager().getRepository(Scopeitem)
@@ -80,5 +106,6 @@ export default {
   getPKGSIA,
   addPKGSIA,
   removePKGSIA,
-  getUnassignSIs
+  getUnassignSIs,
+  createNewSIandAssign
 }

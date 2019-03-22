@@ -1,21 +1,19 @@
-import { Entity, Column, PrimaryColumn, Timestamp, OneToMany, JoinTable } from 'typeorm'
+import { Entity, Column, PrimaryColumn, Timestamp } from 'typeorm'
 
 @Entity()
-export class Package {
+export class SIRec {
   @PrimaryColumn({ type: 'character', length: 40 })
-  public PKG_ID: string
-
-  // @OneToMany(type => PackageT, packageT => packageT.pkg)
-  // public packageTs: PackageT[]
+  public SI_ID: string
+  @PrimaryColumn({ type: 'character', length: 40 })
+  public REC_ID: string
 
   @PrimaryColumn({ type: 'character', length: 2 })
   public VERSION: string
   @Column({ type: 'character', length: 1, nullable: true })
-  public COMPLETION: string
-  @Column({ type: 'boolean'})
-  public OutOfScope: boolean
+  public AVAILABILITY: string
   @Column({ type: 'character', length: 1, nullable: true })
-  public Type: string  
+  public LIFECYCLE: string
+
   @Column({ type: 'character', length: 20, nullable: true })
   public CREATED_BY: string
 

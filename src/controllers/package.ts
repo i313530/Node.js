@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import PKGService from '../services/pkg'
 import PKGSIAService from '../services/pkgsiA'
 
+
 /* API Controllers */
 export const getPackages = async (req: Request, res: Response) => {
   try {
@@ -118,6 +119,27 @@ export const savePackage = async (req: Request, res: Response) => {
     }
     await PKGService.savePackage(oPackage)
     res.json(oPackage)
+  } catch (err) {
+    console.log(err)
+    res.status(500)
+    res.send(err)
+  }
+}
+import { Scopeitem } from '../models/SI'
+export const createNewSIandAssign = async (req: Request, res: Response) => {
+  try {
+    const pkgid = req.params.pkgid
+    const oSI: Scopeitem = {
+      SI_ID: req.params.siid,
+      VERSION: 'D',
+      currentName: '',
+      CHANGED_AT: '',
+      CHANGED_BY: '',
+      CREATED_AT: '',
+      CREATED_BY: ''
+    }
+    PKGSIAService.createNewSIandAssign(pkgid, oSI)
+    res.json('dd')
   } catch (err) {
     console.log(err)
     res.status(500)

@@ -61,4 +61,16 @@ exports.removeScopeitem = (req, res) => __awaiter(this, void 0, void 0, function
         res.send(err);
     }
 });
+exports.getFields = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const id = req.params.id;
+        const oField = yield SI_1.default.getFields(id);
+        res.json(oField);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500);
+        res.send(err);
+    }
+});
 //# sourceMappingURL=SI.js.map
