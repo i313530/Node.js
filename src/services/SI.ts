@@ -2,9 +2,12 @@ import { getManager, getConnection } from 'typeorm'
 import { Scopeitem } from '../models/SI'
 import { ScopeitemT } from '../models/SIT'
 import { SIField } from '../models/SIField'
+import { SIRec } from '../models/SI_REC'
+import { Record } from '../models/record'
+import uuid from 'uuid/v4'
 import _ from 'lodash'
 import moment from 'moment'
-
+// const uuidv4 = require('uuid/v4')
 const getSIs = async () => {
   const selectSI = await getConnection()
     .createQueryBuilder()
@@ -64,10 +67,58 @@ const getFields = async (SIID: string) => {
   const FLDs = await FLDRepo.find({ SI_ID: SIID })
   return FLDs
 }
+const updateField = async (SIID: string,FLD:SIField) => {
+  const FLDRepo = getManager().getRepository(SIField)
+  const FLDs = await FLDRepo.findOne({ SI_ID: SIID ,FIELD :FLD.FIELD})
+  return FLDs
+}
+const addField = async (SIID: string, fldid: string) => {
+  const FLDRepo = getManager().getRepository(SIField)
+  const oFLD = new SIField()
+  oFLD.SI_ID = SIID
+  oFLD.FIELD = fldid
+  oFLD.VERSION = 'D'
+  oFLD.VISIBILITY = false
+  const SIRepo = getManager().getRepository(Scopeitem)
+  const oSI = await SIRepo.findOne({ SI_ID: SIID })
+  oSI.CHANGED_AT = moment().format('YYYY-MM-DD HH:mm:ss')
+  await SIRepo.save(oSI)
+  await FLDRepo.save(oFLD)
+  return oFLD
+}
+const getrecords = async (SIID: string) => {
+  const RecRepo = getManager().getRepository(SIRec)
+  const Recs = await RecRepo.find({ SI_ID: SIID })
+  return Recs
+}
+const createNewRec = async (SIID: string) => {
+  const RecRepo = getManager().getRepository(Record)
+  const SiRecRepo = getManager().getRepository(SIRec)
+  const oRec = new Record()
+  const oSiRec = new SIRec()
+  const SIRepo = getManager().getRepository(Scopeitem)
+  const oSI = await SIRepo.findOne({ SI_ID: SIID })
+  oSI.CHANGED_AT = moment().format('YYYY-MM-DD HH:mm:ss')
+  oSiRec.REC_ID = oRec.REC_ID = uuid()
+  oSiRec.VERSION = oRec.VERSION = 'D'
+  oSiRec.SI_ID = SIID
+  oSI.CHANGED_AT = oSiRec.CREATED_AT = oRec.CREATED_AT = oRec.CHANGED_AT = moment().format('YYYY-MM-DD HH:mm:ss')
+  try {
+    Promise.all([RecRepo.save(oRec), SiRecRepo.save(oSiRec), SIRepo.save(oSI)])
+    return oSiRec
+  } catch (err) {
+    return false
+  }
+}
+
 export default {
   getSIs,
   addSI,
   removeSI,
   getOneSI,
-  getFields
+  getFields,
+  addField,
+  getrecords,
+  createNewRec,
+  updateField
 }

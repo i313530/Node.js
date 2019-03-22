@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import SIService from '../services/SI'
-
+import { SIField } from '../models/SIField'
 /* API Controllers */
 export const getScopeitems = async (req: Request, res: Response) => {
   try {
@@ -52,6 +52,52 @@ export const getFields = async (req: Request, res: Response) => {
     const id = req.params.id
     const oField = await SIService.getFields(id)
     res.json(oField)
+  } catch (err) {
+    console.log(err)
+    res.status(500)
+    res.send(err)
+  }
+}
+export const addField = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id
+    const siid = req.params.siid
+    const oField = await SIService.addField(siid, id)
+    res.json(oField)
+  } catch (err) {
+    console.log(err)
+    res.status(500)
+    res.send(err)
+  }
+}
+export const getrecords = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id
+    const oRecs = await SIService.getrecords(id)
+    res.json(oRecs)
+  } catch (err) {
+    console.log(err)
+    res.status(500)
+    res.send(err)
+  }
+}
+export const addsiinitrecord = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id
+    const oRecs = await SIService.createNewRec(id)
+    res.json(oRecs)
+  } catch (err) {
+    console.log(err)
+    res.status(500)
+    res.send(err)
+  }
+}
+export const updataSiFld = async (req: Request, res: Response) => {
+  try {
+    const id = req.body.id
+    const Fld = new SIField()
+    const oRecs = await SIService.updateField(id, Fld)
+    res.json(oRecs)
   } catch (err) {
     console.log(err)
     res.status(500)

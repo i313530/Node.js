@@ -8,8 +8,8 @@ export class SIField {
   public FIELD: string
   @PrimaryColumn({ type: 'character', length: 2 })
   public VERSION: string
-  @Column({ type: 'int' })
-  public DISPLAY_ORDER: string
+  @Column({ type: 'int', nullable: true })
+  public DISPLAY_ORDER: number
   @Column({ type: 'boolean' })
   public VISIBILITY: boolean
   @Column({ type: 'character', length: 2, nullable: true })

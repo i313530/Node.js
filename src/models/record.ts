@@ -7,8 +7,7 @@ export class Record {
 
   @PrimaryColumn({ type: 'character', length: 2 })
   public VERSION: string
-  @Column({ type: 'character', length: 32})
-  public TABLE: string
+
   @Column({ type: 'character', length: 40, nullable: true })
   public KEY_HASH: string
   @Column({ nullable: true })

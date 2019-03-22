@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const SI_1 = __importDefault(require("../services/SI"));
+const SIField_1 = require("../models/SIField");
 /* API Controllers */
 exports.getScopeitems = (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
@@ -66,6 +67,56 @@ exports.getFields = (req, res) => __awaiter(this, void 0, void 0, function* () {
         const id = req.params.id;
         const oField = yield SI_1.default.getFields(id);
         res.json(oField);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500);
+        res.send(err);
+    }
+});
+exports.addField = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const id = req.params.id;
+        const siid = req.params.siid;
+        const oField = yield SI_1.default.addField(siid, id);
+        res.json(oField);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500);
+        res.send(err);
+    }
+});
+exports.getrecords = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const id = req.params.id;
+        const oRecs = yield SI_1.default.getrecords(id);
+        res.json(oRecs);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500);
+        res.send(err);
+    }
+});
+exports.addsiinitrecord = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const id = req.params.id;
+        const oRecs = yield SI_1.default.createNewRec(id);
+        res.json(oRecs);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500);
+        res.send(err);
+    }
+});
+exports.updataSiFld = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const id = req.body.id;
+        const Fld = new SIField_1.SIField();
+        const oRecs = yield SI_1.default.updateField(id, Fld);
+        res.json(oRecs);
     }
     catch (err) {
         console.log(err);

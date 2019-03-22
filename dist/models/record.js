@@ -22,10 +22,6 @@ __decorate([
     __metadata("design:type", String)
 ], Record.prototype, "VERSION", void 0);
 __decorate([
-    typeorm_1.Column({ type: 'character', length: 32 }),
-    __metadata("design:type", String)
-], Record.prototype, "TABLE", void 0);
-__decorate([
     typeorm_1.Column({ type: 'character', length: 40, nullable: true }),
     __metadata("design:type", String)
 ], Record.prototype, "KEY_HASH", void 0);

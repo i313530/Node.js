@@ -10,46 +10,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
-let SIField = class SIField {
+let RecCell = class RecCell {
 };
 __decorate([
     typeorm_1.PrimaryColumn({ type: 'character', length: 40 }),
     __metadata("design:type", String)
-], SIField.prototype, "SI_ID", void 0);
+], RecCell.prototype, "REC_ID", void 0);
 __decorate([
-    typeorm_1.PrimaryColumn({ type: 'character', length: 32 }),
+    typeorm_1.PrimaryColumn({ type: 'character', length: 40 }),
     __metadata("design:type", String)
-], SIField.prototype, "FIELD", void 0);
+], RecCell.prototype, "FLD_ID", void 0);
 __decorate([
     typeorm_1.PrimaryColumn({ type: 'character', length: 2 }),
     __metadata("design:type", String)
-], SIField.prototype, "VERSION", void 0);
+], RecCell.prototype, "VERSION", void 0);
 __decorate([
-    typeorm_1.Column({ type: 'int', nullable: true }),
-    __metadata("design:type", Number)
-], SIField.prototype, "DISPLAY_ORDER", void 0);
-__decorate([
-    typeorm_1.Column({ type: 'boolean' }),
-    __metadata("design:type", Boolean)
-], SIField.prototype, "VISIBILITY", void 0);
-__decorate([
-    typeorm_1.Column({ type: 'character', length: 2, nullable: true }),
+    typeorm_1.Column({ nullable: true }),
     __metadata("design:type", String)
-], SIField.prototype, "TYPE", void 0);
-__decorate([
-    typeorm_1.Column({ type: 'character', length: 4, nullable: true }),
-    __metadata("design:type", String)
-], SIField.prototype, "DDTYPE", void 0);
-__decorate([
-    typeorm_1.Column({ type: 'int', nullable: true }),
-    __metadata("design:type", String)
-], SIField.prototype, "DDLENG", void 0);
-__decorate([
-    typeorm_1.Column({ type: 'character', length: 30, nullable: true }),
-    __metadata("design:type", String)
-], SIField.prototype, "ALIAS", void 0);
-SIField = __decorate([
+], RecCell.prototype, "VALUE", void 0);
+RecCell = __decorate([
     typeorm_1.Entity()
-], SIField);
-exports.SIField = SIField;
-//# sourceMappingURL=SIField.js.map
+], RecCell);
+exports.RecCell = RecCell;
+//# sourceMappingURL=reccell.js.map

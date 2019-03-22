@@ -26,12 +26,17 @@
     <text id="Last">Last changed at: </text><text id="SI_CHANGED"></text>   
     </div>
   </p>  </p> 
-  <h5>Fields:</h5>
-  </p>
   <div>
+      <h5>Fields:</h5>
+    </p>   
+    <input type="text" id="FLDidInput"  />
+    <button onclick="AddField()">Add Field</button>
+  </p> 
     <table id="Fields">
       <tr>
+        <th style="font-style: italic">Action</th>
         <th>Field</th>
+        <th>Type</th>
         <th>Alias</th> 
         <th>Visibility</th>
         <th>Display Order</th>
@@ -40,8 +45,11 @@
   </div>    
   </p>
   <h5>Records</h5>
+  <button onclick="AddinitRec()">Add Initial Row</button>
   </p>  
-     <div id="Content"></div>
+     <div id="Content">
+        <table id="Records"></table>
+     </div>
   </p> 
     <a href="./pkg.html">Goto Package List</a>    </p>   
     <a href="./si.html">Goto SI List</a>
