@@ -9,7 +9,7 @@ function loadSI() {
   ThisID = id
   $.ajax(`/api/Scopeitem/${id}`, {
     method: 'GET',
-    success: function(SI) {
+    success: function (SI) {
       displayhead(SI)
     }
   })
@@ -35,10 +35,10 @@ function displayhead(SI) {
 function loadfld() {
   $.ajax(`/api/Scopeitem/field/${ThisID}`, {
     method: 'GET',
-    success: function(FLDs) {
+    success: function (FLDs) {
       _.sortBy(FLDs, DISPLAY_ORDER)
       bufferFLDs = FLDs
-      FLDs.forEach(function(d) {
+      FLDs.forEach(function (d) {
         displayField(d)
       })
       displayRecHead(FLDs)
@@ -74,17 +74,17 @@ function newFLDline(FLD) {
   </tr>`)
 }
 
-function updateFLD(fldid) {}
+function updateFLD(fldid) { }
 function AddField() {
   var FLDID = $('#FLDidInput').val()
   $.ajax(`/api/Scopeitem/field/${ThisID}/${FLDID}`, {
     method: 'POST',
-    success: function(FLD) {
+    success: function (FLD) {
       displayField(FLD)
       resetLastChange()
       $('#FLDidInput').val('')
     },
-    error: function() {
+    error: function () {
       alert('Add field failed!')
     }
   })
@@ -97,7 +97,7 @@ function displayRecHead(FLDs) {
 }
 function eachHead(FLDs) {
   var output = ''
-  FLDs.forEach(function(d) {
+  FLDs.forEach(function (d) {
     output = output + `<th>${d.FIELD}</th>`
   })
   return output
@@ -114,21 +114,23 @@ function resetLastChange() {
 function loadRec() {
   $.ajax(`/api/Scopeitem/record/${ThisID}`, {
     method: 'GET',
-    success: function(Recs) {
+    success: function (Recs) {
       displayRecs(Recs)
     }
   })
 }
 function displayRecs(Recs) {
-  Recs.forEach(function(rec) {
+  Recs.forEach(function (rec) {
     $('#Records').append(addRecline(rec))
   })
 }
 function addRecline(rec) {
   $.ajax(`/api/records/${id}`, {
     method: 'GET',
-    success: function(Recdata) {
-      bufferFLDs.forEach()
+    success: function (Recdata) {
+      bufferFLDs.forEach(function (fld) {
+
+      })
     }
   })
 }
@@ -136,7 +138,7 @@ function addRecline(rec) {
 function AddinitRec() {
   $.ajax(`/api/Scopeitem/record/${ThisID}`, {
     method: 'POST',
-    success: function(Rec) {
+    success: function (Rec) {
       addRecline(Rec)
     }
   })
