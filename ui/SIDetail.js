@@ -1,5 +1,7 @@
+// import { RecordOutput } from '../models/RecData'
 var ThisID
 var bufferFLDs
+
 loadSI()
 loadfld()
 loadRec()
@@ -32,11 +34,14 @@ function displayhead(SI) {
   $('#SI_CHANGED').text(SI.SI_CHANGED_AT)
 }
 
+function SaveRec() {
+
+}
 function loadfld() {
   $.ajax(`/api/Scopeitem/field/${ThisID}`, {
     method: 'GET',
     success: function (FLDs) {
-      _.sortBy(FLDs, DISPLAY_ORDER)
+      _.sortBy(FLDs, ['DISPLAY_ORDER'])
       bufferFLDs = FLDs
       FLDs.forEach(function (d) {
         displayField(d)
@@ -95,6 +100,7 @@ function displayRecHead(FLDs) {
   var thead = '<tr>' + eachHead(FLDs) + '</tr>'
   $('#Records').append(thead)
 }
+
 function eachHead(FLDs) {
   var output = ''
   FLDs.forEach(function (d) {
@@ -120,17 +126,26 @@ function loadRec() {
   })
 }
 function displayRecs(Recs) {
+
   Recs.forEach(function (rec) {
-    $('#Records').append(addRecline(rec))
+    addRecline(rec)
   })
 }
 function addRecline(rec) {
-  $.ajax(`/api/records/${id}`, {
+  $.ajax(`/api/records/${rec.REC_ID}`, {
     method: 'GET',
     success: function (Recdata) {
-      bufferFLDs.forEach(function (fld) {
-
+      var tdline = `<tr id="REC_${rec.REC_ID}">`
+      bufferFLDs.forEach(function (FLD) {
+        var recline = _.find(Recdata, { 'FLD_ID': FLD.FIELD })
+        if (recline === undefined) {
+          tdline = tdline + `<td><input type="text" id="REC_${rec.REC_ID}_${FLD.FIELD}" class="CellValue" value=""></td>`
+        } else {
+          tdline = tdline + `<td><input type="text" id="REC_${rec.REC_ID}_${FLD.FIELD}" value="${recline.VALUE}"></td>`
+        }
       })
+      tdline = tdline + '</tr>'
+      $('#Records').append($(tdline))
     }
   })
 }
@@ -143,3 +158,45 @@ function AddinitRec() {
     }
   })
 }
+
+function SaveRec() {
+  var recdata = []
+  var tdlines = $('.CellValue')
+  var i = 0
+  _.forEach(tdlines, function (td) {
+    var tdidA = td.id.split('_')
+    var recid = tdidA[1]
+    var fldid = tdidA[2]
+    var recindex = _.findIndex(recdata, { 'REC_ID': recid })
+    if (recindex === -1) {
+      recdata[i] = {}
+      recdata[i].REC_ID = recid
+      recdata[i].cells = [{ FLD_ID: fldid, VALUE: td.value }]
+      i++
+    } else {
+      recdata[recindex].cells = _.union(recdata[recindex].cells, [{ FLD_ID: fldid, VALUE: td.value }])
+    }
+  })
+  $.ajax(`/api/records/${id}`, {
+    method: 'PUT',
+    data: {
+      RECs: recdata
+    },
+    success:function(){alert('Succeed')},
+    error: function(){alert('Failed')}
+  })
+
+  // Promise.all(arr)
+  // .then(function () {alert('ok') })
+  // .catch(function () { alert('error')})
+
+}
+
+// setdata = async (rec) => {
+//   $.ajax(`/api/records/${id}`, {
+//     method: 'PUT',
+//     data: {
+//       RECs: recdata
+//     },
+//   })
+// }

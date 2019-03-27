@@ -19,13 +19,13 @@ function loadPackage() {
   Langu = navigator.language
   $.ajax('/api/domain/', {
     method: 'GET',
-    success: function(DD07) {
+    success: function (DD07) {
       DD07L = DD07
     }
   })
   $.ajax(`/api/packages/${id}`, {
     method: 'GET',
-    success: function(package) {
+    success: function (package) {
       appendPackage(package)
       // $('#OutOfScope').val(package.PKG_OutOfScope)
       fulfillselect(package.PKG_COMPLETION)
@@ -34,16 +34,16 @@ function loadPackage() {
   })
   $.ajax(`/api/pkgsiA/${id}`, {
     method: 'GET',
-    success: function(Assignments) {
-      Assignments.forEach(function(d) {
+    success: function (Assignments) {
+      Assignments.forEach(function (d) {
         appendAssign(d)
       })
     }
   })
   $.ajax(`/api/unassignSI/${id}`, {
     method: 'GET',
-    success: function(SIs) {
-      SIs.forEach(function(d) {
+    success: function (SIs) {
+      SIs.forEach(function (d) {
         appendUnassigns(d.SI_ID)
       })
     }
@@ -61,7 +61,7 @@ function createUnassignLi(SIID) {
 function addAssign(SI_ID) {
   $.ajax(`/api/pkgsiA/${ThisID}/${SI_ID}`, {
     method: 'POST',
-    success: function(SI) {
+    success: function (SI) {
       removeUnassignLi(SI.SI_ID)
       addAssignLi(SI.SI_ID)
       resetLastChange()
@@ -71,10 +71,8 @@ function addAssign(SI_ID) {
 function addAssignLi(ID) {
   $.ajax(`/api/Scopeitem/${ID}`, {
     method: 'GET',
-    success: function(SIs) {
-      SIs.forEach(function(d) {
-        appendSI2Assign(d)
-      })
+    success: function (SI) {
+      appendSI2Assign(SI)
     }
   })
 }
@@ -102,7 +100,7 @@ function createAssignLi(SI) {
 function removeAssign(id) {
   $.ajax(`/api/pkgsiA/${ThisID}/${id}`, {
     method: 'DELETE',
-    success: function(resp) {
+    success: function (resp) {
       removeAssignLi(id)
       appendUnassigns(id)
       resetLastChange()
@@ -131,7 +129,7 @@ function createNewSI() {
       SI_ID: $SIidinput.val(),
       SI_NAME: $SInameInput.val()
     },
-    success: function(SI) {
+    success: function (SI) {
       addAssign(SI.SI_SI_ID)
       $('#NewSI').hide()
       resetLastChange()
@@ -186,12 +184,12 @@ function SavePackage() {
       OutOfScope: $('#OutOfScope').prop('checked'),
       Type: $('input[name="PKGType"]:checked').val()
     },
-    success: function() {
+    success: function () {
       alert('succeed!')
       resetLastChange()
       $('#SaveBotton').hide()
     },
-    error: function() {
+    error: function () {
       alert('Failed!')
     }
   })
@@ -205,11 +203,11 @@ function renamePackage() {
       LANGU: Langu,
       PKG_NAME: $PkgnameInput.val()
     },
-    success: function() {
+    success: function () {
       alert('succeed!')
       resetLastChange()
     },
-    error: function() {
+    error: function () {
       alert('Failed!')
     }
   })
@@ -222,7 +220,7 @@ function resetLastChange() {
 
 function fulfillselect(COMPLETION) {
   // $('#CompSel').append(`<option value =''> </option>`)
-  _.forEach(DD07L, function(DD07) {
+  _.forEach(DD07L, function (DD07) {
     if (DD07.Name == 'Completion') {
       $('#CompSel').append(`<option value ='${DD07.Key}'>${DD07.Value}</option>`)
     }
@@ -236,7 +234,7 @@ function fulfillselect(COMPLETION) {
   }
 }
 function bindClickradio() {
-  $('input[name="PKGType"]').on('click change', function() {
+  $('input[name="PKGType"]').on('click change', function () {
     addSavebutton()
   })
 }

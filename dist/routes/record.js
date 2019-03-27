@@ -12,6 +12,7 @@ const RecController = __importStar(require("../controllers/record"));
 const ApiRouter = express_1.Router();
 exports.default = (app) => {
     ApiRouter.delete(':id', RecController.deleteRec);
+    ApiRouter.put(':id', RecController.upsertRec);
     ApiRouter.get('/:id', RecController.getRecData);
     app.use('/api/records', ApiRouter);
 };

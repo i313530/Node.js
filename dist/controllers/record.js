@@ -15,8 +15,8 @@ const rec_1 = __importDefault(require("../services/rec"));
 exports.getRecData = (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
         const id = req.params.id;
-        const packages = yield rec_1.default.getRecdata(id);
-        res.json(packages);
+        const rec = yield rec_1.default.getRecdata(id);
+        res.json(rec);
     }
     catch (err) {
         // console.log(err)
@@ -29,6 +29,19 @@ exports.deleteRec = (req, res) => __awaiter(this, void 0, void 0, function* () {
         const id = req.params.id;
         const packages = yield rec_1.default.deleteRec(id);
         res.json(packages);
+    }
+    catch (err) {
+        // console.log(err)
+        res.status(500);
+        res.send(err);
+    }
+});
+exports.upsertRec = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const id = req.params.id;
+        const data = req.body.RECs;
+        yield rec_1.default.upsertRecdata(id, data);
+        res.json('ok');
     }
     catch (err) {
         // console.log(err)
