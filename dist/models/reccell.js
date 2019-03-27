@@ -17,7 +17,7 @@ __decorate([
     __metadata("design:type", String)
 ], RecCell.prototype, "REC_ID", void 0);
 __decorate([
-    typeorm_1.PrimaryColumn({ type: 'character', length: 40 }),
+    typeorm_1.PrimaryColumn({ type: 'character', length: 30 }),
     __metadata("design:type", String)
 ], RecCell.prototype, "FLD_ID", void 0);
 __decorate([

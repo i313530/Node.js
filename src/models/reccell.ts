@@ -4,7 +4,7 @@ import { Entity, Column, PrimaryColumn } from 'typeorm'
 export class RecCell {
   @PrimaryColumn({ type: 'character', length: 40 })
   public REC_ID: string
-  @PrimaryColumn({ type: 'character', length: 40 })
+  @PrimaryColumn({ type: 'character', length: 30 })
   public FLD_ID: string
 
   @PrimaryColumn({ type: 'character', length: 2 })

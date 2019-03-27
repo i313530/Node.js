@@ -25,13 +25,13 @@ export const deleteRec = async (req: Request, res: Response) => {
 }
 export const upsertRec = async (req: Request, res: Response) => {
   try {
-    const id = req.params.id
     const data = req.body.RECs
-    await RecService.upsertRecdata(id, data)
+    const siid = req.params.siid
+    await RecService.upsertRecdata(siid, data)
     res.json('ok')
   } catch (err) {
     // console.log(err)
     res.status(500)
     res.send(err)
-  }
+  } 
 }

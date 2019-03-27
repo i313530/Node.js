@@ -4,7 +4,7 @@ import { Entity, Column, PrimaryColumn, Timestamp } from 'typeorm'
 export class SIField {
   @PrimaryColumn({ type: 'character', length: 40 })
   public SI_ID: string
-  @PrimaryColumn({ type: 'character', length: 32 })
+  @PrimaryColumn({ type: 'character', length: 30 })
   public FIELD: string
   @PrimaryColumn({ type: 'character', length: 2 })
   public VERSION: string

@@ -38,9 +38,9 @@ exports.deleteRec = (req, res) => __awaiter(this, void 0, void 0, function* () {
 });
 exports.upsertRec = (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
-        const id = req.params.id;
         const data = req.body.RECs;
-        yield rec_1.default.upsertRecdata(id, data);
+        const siid = req.params.siid;
+        yield rec_1.default.upsertRecdata(siid, data);
         res.json('ok');
     }
     catch (err) {

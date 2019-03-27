@@ -17,7 +17,7 @@ __decorate([
     __metadata("design:type", String)
 ], SIField.prototype, "SI_ID", void 0);
 __decorate([
-    typeorm_1.PrimaryColumn({ type: 'character', length: 32 }),
+    typeorm_1.PrimaryColumn({ type: 'character', length: 30 }),
     __metadata("design:type", String)
 ], SIField.prototype, "FIELD", void 0);
 __decorate([

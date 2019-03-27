@@ -136,12 +136,13 @@ function addRecline(rec) {
     method: 'GET',
     success: function (Recdata) {
       var tdline = `<tr id="REC_${rec.REC_ID}">`
+      var cells = Recdata.cells
       bufferFLDs.forEach(function (FLD) {
-        var recline = _.find(Recdata, { 'FLD_ID': FLD.FIELD })
+        var recline = _.find(cells, { 'FLD_ID': FLD.FIELD.trim() })
         if (recline === undefined) {
           tdline = tdline + `<td><input type="text" id="REC_${rec.REC_ID}_${FLD.FIELD}" class="CellValue" value=""></td>`
         } else {
-          tdline = tdline + `<td><input type="text" id="REC_${rec.REC_ID}_${FLD.FIELD}" value="${recline.VALUE}"></td>`
+          tdline = tdline + `<td><input type="text" id="REC_${rec.REC_ID}_${FLD.FIELD}" class="CellValue" value="${recline.VALUE}"></td>`
         }
       })
       tdline = tdline + '</tr>'
@@ -177,13 +178,13 @@ function SaveRec() {
       recdata[recindex].cells = _.union(recdata[recindex].cells, [{ FLD_ID: fldid, VALUE: td.value }])
     }
   })
-  $.ajax(`/api/records/${id}`, {
+  $.ajax(`/api/records/${ThisID}`, {
     method: 'PUT',
     data: {
       RECs: recdata
     },
-    success:function(){alert('Succeed')},
-    error: function(){alert('Failed')}
+    success: function () { alert('Succeed') },
+    error: function () { alert('Failed') }
   })
 
   // Promise.all(arr)
