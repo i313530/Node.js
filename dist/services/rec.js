@@ -25,7 +25,6 @@ const getRecdata = (ID) => __awaiter(this, void 0, void 0, function* () {
     const cellRepo = typeorm_1.getManager().getRepository(reccell_1.RecCell);
     const Reccells = yield cellRepo.find({ REC_ID: ID });
     RecData.cells = Reccells;
-    console.log(RecData);
     return RecData;
 });
 const deleteRec = (ID) => __awaiter(this, void 0, void 0, function* () {

@@ -41,12 +41,12 @@ function loadfld() {
   $.ajax(`/api/Scopeitem/field/${ThisID}`, {
     method: 'GET',
     success: function (FLDs) {
-      _.sortBy(FLDs, ['DISPLAY_ORDER'])
-      bufferFLDs = FLDs
+      FLDs = _.sortBy(FLDs, ['DISPLAY_ORDER'])
+      bufferFLDs = _.filter(FLDs, { VISIBILITY: true })
       FLDs.forEach(function (d) {
         displayField(d)
       })
-      displayRecHead(FLDs)
+      displayRecHead(bufferFLDs)
     }
   })
 }
@@ -54,32 +54,71 @@ function loadfld() {
 function newFLDline(FLD) {
   var t_PK_check = ''
   var t_FK_check = ''
+  var t_radio_t = ''
+  var t_radio_f = ''
   switch (FLD.TYPE) {
-    case 'P':
+    case 'P ':
       t_PK_check = 'checked'
       break
-    case 'F':
+    case 'F ':
       t_FK_check = 'checked'
       break
-    case 'A':
+    case 'PF':
       t_PK_check = 'checked'
       t_FK_check = 'checked'
       break
   }
-
+  switch (FLD.VISIBILITY) {
+    case true:
+      t_radio_t = 'checked'
+      break
+    case false:
+      t_radio_f = 'checked'
+      break
+    case 'null':
+      break
+  }
   return $(`<tr id="FLD_${FLD.FIELD}">
   <td><button onclick="updateFLD('${FLD.FIELD}')">Update</button><br>
   <button onclick="deleteFLD('${FLD.FIELD}')">Delete</button></td>
   <td>${FLD.FIELD}</td>
   <td><input type="checkbox" id="FLD_${FLD.FIELD}_PK" ${t_PK_check}>Primary Key<br>
-  <input type="checkbox" id="FLD_${FLD.FIELD}_PK" ${t_FK_check}>Foreign Key</td>
+  <input type="checkbox" id="FLD_${FLD.FIELD}_FK" ${t_FK_check}>Foreign Key</td>
   <td><input type="text" id="FLD_${FLD.FIELD}_Alias" value="${FLD.ALIAS}"></td>
-  <td><input type="text" id="FLD_${FLD.FIELD}_VISIBILITY" value="${FLD.VISIBILITY}"></td>
+  <td><input type="radio" name="${FLD.FIELD}_VISIBILITY" value="true" ${t_radio_t}>Display<br>
+  <input type="radio" name="${FLD.FIELD}_VISIBILITY" value="false" ${t_radio_f}>Hide</td>
   <td><input type="text" id="FLD_${FLD.FIELD}_ORDER" value="${FLD.DISPLAY_ORDER}"></td>
   </tr>`)
 }
 
-function updateFLD(fldid) { }
+function updateFLD(fldid) {
+  var fldType = ''
+  if ($(`input[id='FLD_${fldid}_PK']`).prop('checked')) {
+    fldType = 'P'
+  }
+  if ($(`input[id='FLD_${fldid}_FK']`).prop('checked')) {
+    fldType = fldType + 'F'
+  }
+
+  $.ajax(`/api/Scopeitem/field`, {
+    method: 'PUT',
+    data: {
+      SI_ID: ThisID,
+      FIELD: fldid,
+      DISPLAY_ORDER: $(`input[id='FLD_${fldid}_ORDER']`).val(),
+      ALIAS: $(`input[id='FLD_${fldid}_Alias']`).val(),
+      VISIBILITY: $(`input[name="${fldid}_VISIBILITY"]:checked`).val(),
+      TYPE: fldType
+    },
+    success: function () {
+      alert('Update field Succeed!')
+      // resetLastChange()
+    },
+    error: function () {
+      alert('Update field failed!')
+    }
+  })
+}
 function AddField() {
   var FLDID = $('#FLDidInput').val()
   $.ajax(`/api/Scopeitem/field/${ThisID}/${FLDID}`, {
@@ -94,6 +133,9 @@ function AddField() {
     }
   })
 }
+function deleteFLD(FLDid) {
+
+}
 
 function displayRecHead(FLDs) {
   // var tablehead = eachHead(FLDs)
@@ -104,7 +146,10 @@ function displayRecHead(FLDs) {
 function eachHead(FLDs) {
   var output = ''
   FLDs.forEach(function (d) {
-    output = output + `<th>${d.FIELD}</th>`
+    if (d.ALIAS.trim() == '') {
+      d.ALIAS = d.FIELD
+    }
+    output = output + `<th>${d.ALIAS}</th>`
   })
   return output
 }
@@ -138,7 +183,7 @@ function addRecline(rec) {
       var tdline = `<tr id="REC_${rec.REC_ID}">`
       var cells = Recdata.cells
       bufferFLDs.forEach(function (FLD) {
-        var recline = _.find(cells, { 'FLD_ID': FLD.FIELD.trim() })
+        var recline = _.find(cells, { 'FLD_ID': FLD.FIELD })
         if (recline === undefined) {
           tdline = tdline + `<td><input type="text" id="REC_${rec.REC_ID}_${FLD.FIELD}" class="CellValue" value=""></td>`
         } else {

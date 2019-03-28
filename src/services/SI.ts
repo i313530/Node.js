@@ -67,10 +67,21 @@ const getFields = async (SIID: string) => {
   const FLDs = await FLDRepo.find({ SI_ID: SIID })
   return FLDs
 }
-const updateField = async (SIID: string,FLD:SIField) => {
-  const FLDRepo = getManager().getRepository(SIField)
-  const FLDs = await FLDRepo.findOne({ SI_ID: SIID ,FIELD :FLD.FIELD})
-  return FLDs
+const updateField = async (inputfld: SIField) => {
+  console.log(inputfld)
+  return await getConnection()
+    .createQueryBuilder()
+    .update(SIField)
+    .set({
+      DISPLAY_ORDER: inputfld.DISPLAY_ORDER,
+      VISIBILITY: inputfld.VISIBILITY,
+      TYPE: inputfld.TYPE,
+      ALIAS: inputfld.ALIAS,
+    })
+    .where("SI_ID = :id", { id: inputfld.SI_ID })
+    .andWhere("FIELD= :fld", { fld: inputfld.FIELD })
+    .execute()
+
 }
 const addField = async (SIID: string, fldid: string) => {
   const FLDRepo = getManager().getRepository(SIField)
@@ -79,6 +90,7 @@ const addField = async (SIID: string, fldid: string) => {
   oFLD.FIELD = fldid
   oFLD.VERSION = 'D'
   oFLD.VISIBILITY = false
+  oFLD.ALIAS = ''
   const SIRepo = getManager().getRepository(Scopeitem)
   const oSI = await SIRepo.findOne({ SI_ID: SIID })
   oSI.CHANGED_AT = moment().format('YYYY-MM-DD HH:mm:ss')

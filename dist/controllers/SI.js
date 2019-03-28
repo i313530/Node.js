@@ -113,9 +113,14 @@ exports.addsiinitrecord = (req, res) => __awaiter(this, void 0, void 0, function
 });
 exports.updataSiFld = (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
-        const id = req.body.id;
         const Fld = new SIField_1.SIField();
-        const oRecs = yield SI_1.default.updateField(id, Fld);
+        Fld.SI_ID = req.body.SI_ID;
+        Fld.FIELD = req.body.FIELD;
+        Fld.DISPLAY_ORDER = req.body.DISPLAY_ORDER;
+        Fld.ALIAS = req.body.ALIAS;
+        Fld.VISIBILITY = req.body.VISIBILITY;
+        Fld.TYPE = req.body.TYPE;
+        const oRecs = yield SI_1.default.updateField(Fld);
         res.json(oRecs);
     }
     catch (err) {

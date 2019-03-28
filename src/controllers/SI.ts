@@ -94,9 +94,14 @@ export const addsiinitrecord = async (req: Request, res: Response) => {
 }
 export const updataSiFld = async (req: Request, res: Response) => {
   try {
-    const id = req.body.id
     const Fld = new SIField()
-    const oRecs = await SIService.updateField(id, Fld)
+    Fld.SI_ID = req.body.SI_ID
+    Fld.FIELD = req.body.FIELD
+    Fld.DISPLAY_ORDER = req.body.DISPLAY_ORDER
+    Fld.ALIAS = req.body.ALIAS
+    Fld.VISIBILITY = req.body.VISIBILITY
+    Fld.TYPE = req.body.TYPE
+    const oRecs = await SIService.updateField(Fld)
     res.json(oRecs)
   } catch (err) {
     console.log(err)

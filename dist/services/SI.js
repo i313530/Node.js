@@ -79,10 +79,20 @@ const getFields = (SIID) => __awaiter(this, void 0, void 0, function* () {
     const FLDs = yield FLDRepo.find({ SI_ID: SIID });
     return FLDs;
 });
-const updateField = (SIID, FLD) => __awaiter(this, void 0, void 0, function* () {
-    const FLDRepo = typeorm_1.getManager().getRepository(SIField_1.SIField);
-    const FLDs = yield FLDRepo.findOne({ SI_ID: SIID, FIELD: FLD.FIELD });
-    return FLDs;
+const updateField = (inputfld) => __awaiter(this, void 0, void 0, function* () {
+    console.log(inputfld);
+    return yield typeorm_1.getConnection()
+        .createQueryBuilder()
+        .update(SIField_1.SIField)
+        .set({
+        DISPLAY_ORDER: inputfld.DISPLAY_ORDER,
+        VISIBILITY: inputfld.VISIBILITY,
+        TYPE: inputfld.TYPE,
+        ALIAS: inputfld.ALIAS,
+    })
+        .where("SI_ID = :id", { id: inputfld.SI_ID })
+        .andWhere("FIELD= :fld", { fld: inputfld.FIELD })
+        .execute();
 });
 const addField = (SIID, fldid) => __awaiter(this, void 0, void 0, function* () {
     const FLDRepo = typeorm_1.getManager().getRepository(SIField_1.SIField);
@@ -91,6 +101,7 @@ const addField = (SIID, fldid) => __awaiter(this, void 0, void 0, function* () {
     oFLD.FIELD = fldid;
     oFLD.VERSION = 'D';
     oFLD.VISIBILITY = false;
+    oFLD.ALIAS = '';
     const SIRepo = typeorm_1.getManager().getRepository(SI_1.Scopeitem);
     const oSI = yield SIRepo.findOne({ SI_ID: SIID });
     oSI.CHANGED_AT = moment_1.default().format('YYYY-MM-DD HH:mm:ss');

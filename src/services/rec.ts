@@ -15,7 +15,6 @@ const getRecdata = async (ID: string) => {
   const cellRepo = getManager().getRepository(RecCell)
   const Reccells = await cellRepo.find({ REC_ID: ID })
   RecData.cells = Reccells
-  console.log(RecData)
   return RecData
 }
 

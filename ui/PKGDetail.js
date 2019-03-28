@@ -197,11 +197,11 @@ function SavePackage() {
 
 function renamePackage() {
   var name = $('#PkgnameInput').val()
-  $.ajax(`/api/packages/${ThisID}/${name}`, {
+  $.ajax(`/api/packages/${ThisID}`, {
     method: 'PUT',
     data: {
       LANGU: Langu,
-      PKG_NAME: $PkgnameInput.val()
+      PKG_NAME: name
     },
     success: function () {
       alert('succeed!')
