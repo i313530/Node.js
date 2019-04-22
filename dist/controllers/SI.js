@@ -129,4 +129,17 @@ exports.updataSiFld = (req, res) => __awaiter(this, void 0, void 0, function* ()
         res.send(err);
     }
 });
+exports.deleteSiFld = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const siid = req.params.siid;
+        const fldid = req.params.id;
+        yield SI_1.default.removeField(siid, fldid);
+        res.json(fldid);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500);
+        res.send(err);
+    }
+});
 //# sourceMappingURL=SI.js.map

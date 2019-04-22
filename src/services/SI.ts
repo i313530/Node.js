@@ -91,6 +91,7 @@ const addField = async (SIID: string, fldid: string) => {
   oFLD.VERSION = 'D'
   oFLD.VISIBILITY = false
   oFLD.ALIAS = ''
+  oFLD.DISPLAY_ORDER = 0
   const SIRepo = getManager().getRepository(Scopeitem)
   const oSI = await SIRepo.findOne({ SI_ID: SIID })
   oSI.CHANGED_AT = moment().format('YYYY-MM-DD HH:mm:ss')
@@ -123,6 +124,14 @@ const createNewRec = async (SIID: string) => {
   }
 }
 
+const removeField = async (SIID: string, Fld: string) => {
+  const FLDRepo = getManager().getRepository(SIField)
+  const oFLD = await FLDRepo.findOne({ SI_ID: SIID, FIELD: Fld })
+  FLDRepo.remove(oFLD)
+  // return Recs
+}
+
+
 export default {
   getSIs,
   addSI,
@@ -132,5 +141,6 @@ export default {
   addField,
   getrecords,
   createNewRec,
-  updateField
+  updateField,
+  removeField
 }

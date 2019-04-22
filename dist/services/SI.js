@@ -102,6 +102,7 @@ const addField = (SIID, fldid) => __awaiter(this, void 0, void 0, function* () {
     oFLD.VERSION = 'D';
     oFLD.VISIBILITY = false;
     oFLD.ALIAS = '';
+    oFLD.DISPLAY_ORDER = 0;
     const SIRepo = typeorm_1.getManager().getRepository(SI_1.Scopeitem);
     const oSI = yield SIRepo.findOne({ SI_ID: SIID });
     oSI.CHANGED_AT = moment_1.default().format('YYYY-MM-DD HH:mm:ss');
@@ -134,6 +135,12 @@ const createNewRec = (SIID) => __awaiter(this, void 0, void 0, function* () {
         return false;
     }
 });
+const removeField = (SIID, Fld) => __awaiter(this, void 0, void 0, function* () {
+    const FLDRepo = typeorm_1.getManager().getRepository(SIField_1.SIField);
+    const oFLD = yield FLDRepo.findOne({ SI_ID: SIID, FIELD: Fld });
+    FLDRepo.remove(oFLD);
+    // return Recs
+});
 exports.default = {
     getSIs,
     addSI,
@@ -143,6 +150,7 @@ exports.default = {
     addField,
     getrecords,
     createNewRec,
-    updateField
+    updateField,
+    removeField
 };
 //# sourceMappingURL=SI.js.map

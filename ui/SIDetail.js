@@ -134,7 +134,12 @@ function AddField() {
   })
 }
 function deleteFLD(FLDid) {
-
+  $.ajax(`/api/Scopeitem/field/${ThisID}/${FLDid}`, {
+    method: 'DELETE',
+    success: function () {
+      $(`tr[id="FLD_${FLDid}"]`).remove()
+    }
+  })
 }
 
 function displayRecHead(FLDs) {

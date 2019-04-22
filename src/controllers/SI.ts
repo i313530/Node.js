@@ -109,3 +109,16 @@ export const updataSiFld = async (req: Request, res: Response) => {
     res.send(err)
   }
 }
+
+export const deleteSiFld = async (req: Request, res: Response) => {
+  try {
+    const siid = req.params.siid
+    const fldid = req.params.id
+    await SIService.removeField(siid, fldid)
+    res.json(fldid)
+  } catch (err) {
+    console.log(err)
+    res.status(500)
+    res.send(err)
+  }
+}

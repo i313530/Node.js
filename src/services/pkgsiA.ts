@@ -70,6 +70,7 @@ const getUnassignSIs = async (PKGID: string) => {
 
   return allSis
 }
+createNewSIandAssign()
 // import { EntityManager } from "../../node_modules/typeorm/entity-manager/EntityManager";
 const createNewSIandAssign = async (PKGID: string, SI: Scopeitem) => {
 

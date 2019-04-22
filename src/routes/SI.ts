@@ -13,6 +13,6 @@ export default (app: Application) => {
   ApiRouter.post('/', SIController.addScopeitem)
   ApiRouter.delete('/:id', SIController.removeScopeitem)
   ApiRouter.put('/field', SIController.updataSiFld)
-  ApiRouter.delete('/field', SIController.updataSiFld)
+  ApiRouter.delete('/field/:siid/:id', SIController.deleteSiFld)
   app.use('/api/Scopeitem', ApiRouter)
 }
