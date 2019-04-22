@@ -70,7 +70,7 @@ const getUnassignSIs = async (PKGID: string) => {
 
   return allSis
 }
-createNewSIandAssign()
+
 // import { EntityManager } from "../../node_modules/typeorm/entity-manager/EntityManager";
 const createNewSIandAssign = async (PKGID: string, SI: Scopeitem) => {
 
@@ -85,7 +85,7 @@ const createNewSIandAssign = async (PKGID: string, SI: Scopeitem) => {
     //   throw err
     // })
 
-    await SIService.addSI(SI.SI_ID,SI.VERSION,SI.currentName)
+    await SIService.addSI(SI.SI_ID, SI.VERSION, SI.currentName)
 
 
     setTimeout(() => {
